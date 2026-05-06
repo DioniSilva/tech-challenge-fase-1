@@ -1,0 +1,49 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tech_challenge_fase_1"
+version = "0.0.1"
+description = "Projeto Final Fase 1 MLET10"
+authors = [
+  { name = "MLEKs" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+    "fastapi>=0.136.1",
+    "ipython",
+    "jupyterlab",
+    "matplotlib",
+    "mkdocs",
+    "mlflow>=3.12.0",
+    "notebook",
+    "numpy",
+    "pandas",
+    "pip",
+    "pytest",
+    "python-dotenv",
+    "ruff",
+    "scikit-learn",
+    "uvicorn>=0.46.0",
+]
+requires-python = "~=3.12.0"
+
+
+[tool.ruff]
+line-length = 99
+src = ["tech_challenge_fase_1"]
+include = ["pyproject.toml", "tech_challenge_fase_1/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["tech_challenge_fase_1"]
+force-sort-within-sections = true
+
