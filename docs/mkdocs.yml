@@ -1,4 +1,20 @@
 site_name: Tech Challenge Fase 1
-# 
 site_author: MLEKs
-# 
+
+repo_url: https://github.com/DioniSilva/tech-challenge-fase-1
+
+# Como o mkdocs.yml fica em `docs/`, as fontes ficam em `docs/docs/`.
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: mkdocs
+
+extra_css:
+  - stylesheets/home.css
+
+nav:
+  - Início: index.md
+  - Primeiros passos: getting-started.md
+  - Estrutura do projeto: estrutura-do-projeto.md
+  - Comandos: comandos.md

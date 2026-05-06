@@ -1,0 +1,87 @@
+/* Home page layout tweaks for MkDocs theme (Bootstrap). */
+
+/* Remove empty TOC/sidebar column on the homepage only. */
+body.homepage .container > .row > .col-md-3 {
+  display: none;
+}
+
+body.homepage .container > .row > .col-md-9 {
+  width: 100%;
+  float: none;
+}
+
+.home-hero {
+  background-color: #fbfbfb;
+  /* subtle grid */
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-top: -20px; /* compensate theme top padding */
+  padding: 56px 0 28px;
+}
+
+.home-hero h1 {
+  font-size: 84px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+.home-hero .lead {
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 24px;
+}
+
+.home-hero .home-divider {
+  margin: 18px auto 22px;
+  max-width: 980px;
+  border-top: 1px solid #d8d8d8;
+}
+
+.home-hero .home-actions {
+  margin-top: 18px;
+}
+
+.home-hero .btn {
+  min-width: 180px;
+  margin: 6px 10px;
+}
+
+.home-section {
+  padding: 34px 0 6px;
+}
+
+.home-section h2 {
+  font-size: 76px;
+  font-weight: 300;
+  text-align: center;
+  margin: 18px 0 26px;
+}
+
+.home-card {
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+  background: #fff;
+  padding: 22px 22px 18px;
+  margin-bottom: 26px;
+  min-height: 170px;
+}
+
+.home-card h3 {
+  font-weight: 400;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .home-hero h1 {
+    font-size: 56px;
+  }
+
+  .home-section h2 {
+    font-size: 48px;
+  }
+}

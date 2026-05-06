@@ -1,6 +1,36 @@
-Getting started
-===============
+# Primeiros passos
 
-This is where you describe how to get set up on a clean install, including the
-commands necessary to get the raw data (using the `sync_data_from_s3` command,
-for example), and then how to make the cleaned, final data sets.
+## Requisitos
+
+- Python 3.12
+- `uv` instalado
+
+## Configurar ambiente e dependências
+
+Use o comando abaixo para criar o ambiente e instalar as dependências do projeto:
+
+```bash
+make setup
+```
+
+## Qualidade e testes
+
+```bash
+make lint
+make format
+make test
+```
+
+## Documentação
+
+Subir a documentação localmente:
+
+```bash
+make docs
+```
+
+Gerar o site estático em `docs/site/`:
+
+```bash
+make docs-build
+```

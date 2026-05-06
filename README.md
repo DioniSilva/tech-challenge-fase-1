@@ -2,56 +2,67 @@
 
 Projeto Final Fase 1 MLET10
 
+## Como executar
+
+### Requisitos
+
+- Python 3.12
+- `uv` instalado
+
+### Setup (ambiente + dependencias)
+
+```bash
+make setup
+```
+
+### Qualidade e testes
+
+```bash
+make lint
+make format
+make test
+```
+
+### Documentacao
+
+```bash
+make docs
+make docs-build
+```
+
 ## Estrutura do Projeto
 
 ```
-├── LICENSE            <- Open-source license if one is chosen
-├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
-├── README.md          <- The top-level README for developers using this project.
+├── LICENSE            <- Licenca do projeto
+├── Makefile           <- Atalhos (setup, lint, testes, docs)
+├── README.md          <- README principal do projeto
 ├── data
-│   ├── external       <- Data from third party sources.
-│   ├── interim        <- Intermediate data that has been transformed.
-│   ├── processed      <- The final, canonical data sets for modeling.
-│   └── raw            <- The original, immutable data dump.
+│   ├── external       <- Dados de terceiros
+│   ├── interim        <- Dados intermediarios transformados
+│   ├── processed      <- Dados finais para modelagem
+│   └── raw            <- Dados brutos (imutaveis)
 │
-├── docs               <- A default mkdocs project; see www.mkdocs.org for details
+├── docs               <- Documentacao (MkDocs)
 │
-├── models             <- Trained and serialized models, model predictions, or model summaries
+├── models             <- Modelos treinados e artefatos
 │
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
+├── notebooks          <- Notebooks Jupyter. Convencao: numero (ordem),
+│                         iniciais do autor e descricao curta, ex.:
 │                         `1.0-jqp-initial-data-exploration`.
 │
-├── pyproject.toml     <- Project configuration file with package metadata for 
-│                         tech_challenge_fase_1 and configuration for tools like black
+├── pyproject.toml     <- Config do projeto e ferramentas (ruff/pytest/mkdocs)
+├── uv.lock            <- Lockfile do uv para reproducibilidade
 │
-├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+├── references         <- Dicionarios de dados, manuais e materiais de apoio
 │
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-│   └── figures        <- Generated graphics and figures to be used in reporting
+├── reports            <- Relatorios gerados (HTML, PDF, etc.)
+│   └── figures        <- Figuras/plots gerados para relatorios
 │
-├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-│                         generated with `pip freeze > requirements.txt`
-│
-├── setup.cfg          <- Configuration file for flake8
-│
-└── tech_challenge_fase_1   <- Source code for use in this project.
+└── tech_challenge_fase_1   <- Codigo-fonte do projeto
     │
-    ├── __init__.py             <- Makes tech_challenge_fase_1 a Python module
+    ├── __init__.py             <- Torna `tech_challenge_fase_1` um modulo Python
     │
-    ├── config.py               <- Store useful variables and configuration
-    │
-    ├── dataset.py              <- Scripts to download or generate data
-    │
-    ├── features.py             <- Code to create features for modeling
-    │
-    ├── modeling                
-    │   ├── __init__.py 
-    │   ├── predict.py          <- Code to run model inference with trained models          
-    │   └── train.py            <- Code to train models
-    │
-    └── plots.py                <- Code to create visualizations
+    └── ...                     <- Modulos do projeto (a evoluir)
 ```
 
 --------
-
