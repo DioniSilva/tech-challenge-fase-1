@@ -1,70 +1,73 @@
 #################################################################################
-# GLOBALS                                                                       #
+# GLOBAIS                                                                       #
 #################################################################################
 
 PROJECT_NAME = tech-challenge-fase-1
 PYTHON_VERSION = 3.12
-PYTHON_INTERPRETER = python
+UV_RUN = uv run
+PYTHON_INTERPRETER = $(UV_RUN) python
 
 #################################################################################
-# COMMANDS                                                                      #
+# COMANDOS                                                                      #
 #################################################################################
 
 
-## Install Python dependencies
-.PHONY: requirements
-requirements:
+## Cria o ambiente uv e instala as dependências
+.PHONY: setup
+setup:
+	uv venv --python $(PYTHON_VERSION)
+	@echo ">>> New uv virtual environment created. Activate with:"
+	@echo ">>> Windows: .\\.venv\\Scripts\\activate"
+	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
 	uv sync
-	
 
 
+## Lint com ruff (`make format` para formatar)
+.PHONY: lint
+lint:
+	$(UV_RUN) ruff format --check
+	$(UV_RUN) ruff check
 
-## Delete all compiled Python files
+## Formatar codigo-fonte com ruff (`make lint` para checar)
+.PHONY: format
+format:
+	$(UV_RUN) ruff check --fix
+	$(UV_RUN) ruff format
+
+## Executar testes
+.PHONY: test
+test:
+	$(UV_RUN) pytest tests
+
+
+## Servir a documentacao localmente (mkdocs)
+.PHONY: docs docs-serve
+docs:
+	$(UV_RUN) mkdocs serve -f docs/mkdocs.yml
+
+docs-serve: docs
+
+## Gerar o site da documentacao (mkdocs)
+.PHONY: docs-build
+docs-build:
+	$(UV_RUN) mkdocs build -f docs/mkdocs.yml
+
+
+## Apagar arquivos Python compilados
 .PHONY: clean
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
 
-## Lint using ruff (use `make format` to do formatting)
-.PHONY: lint
-lint:
-	ruff format --check
-	ruff check
-
-## Format source code with ruff
-.PHONY: format
-format:
-	ruff check --fix
-	ruff format
-
-
-
-## Run tests
-.PHONY: test
-test:
-	python -m pytest tests
-
-
-## Set up Python interpreter environment
-.PHONY: create_environment
-create_environment:
-	uv venv --python $(PYTHON_VERSION)
-	@echo ">>> New uv virtual environment created. Activate with:"
-	@echo ">>> Windows: .\\\\.venv\\\\Scripts\\\\activate"
-	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
-	
-
-
-
 #################################################################################
-# PROJECT RULES                                                                 #
+# REGRAS DO PROJETO                                                             #
 #################################################################################
 
 
 
 #################################################################################
-# Self Documenting Commands                                                     #
+# Comandos auto-documentados                                                    #
 #################################################################################
 
 .DEFAULT_GOAL := help
@@ -73,8 +76,10 @@ define PRINT_HELP_PYSCRIPT
 import re, sys; \
 lines = '\n'.join([line for line in sys.stdin]); \
 matches = re.findall(r'\n## (.*)\n[\s\S]+?\n([a-zA-Z_-]+):', lines); \
-print('Available rules:\n'); \
-print('\n'.join(['{:25}{}'.format(*reversed(match)) for match in matches]))
+print('\n'); \
+print('Comandos disponíveis:\n'); \
+print('\n'.join(['{:25}{}'.format(*reversed(match)) for match in matches])); \
+print('\n')
 endef
 export PRINT_HELP_PYSCRIPT
 
