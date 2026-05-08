@@ -20,93 +20,93 @@ Os nomes abaixo seguem as colunas do arquivo, incluindo espaços (ex.: `Zip Code
 
 ### 1. Identificação do cliente
 
-| Variável | Descrição |
-|---|---|
-| `CustomerID` | Identificador único do cliente |
-| `Count` | Valor utilizado para contagem em relatórios e dashboards |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `CustomerID` | `object` | Identificador único do cliente |
+| `Count` | `int64` | Valor utilizado para contagem em relatórios e dashboards |
 
 ### 2. Informações geográficas
 
-| Variável | Descrição |
-|---|---|
-| `Country` | País de residência principal do cliente |
-| `State` | Estado de residência principal |
-| `City` | Cidade de residência principal |
-| `Zip Code` | CEP do cliente |
-| `Lat Long` | Latitude e longitude combinadas |
-| `Latitude` | Latitude da residência |
-| `Longitude` | Longitude da residência |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `Country` | `object` | País de residência principal do cliente |
+| `State` | `object` | Estado de residência principal |
+| `City` | `object` | Cidade de residência principal |
+| `Zip Code` | `int64` | CEP do cliente |
+| `Lat Long` | `object` | Latitude e longitude combinadas |
+| `Latitude` | `float64` | Latitude da residência |
+| `Longitude` | `float64` | Longitude da residência |
 
 ### 3. Perfil demográfico
 
-| Variável | Descrição | Valores |
-|---|---|---|
-| `Gender` | Gênero do cliente | Male, Female |
-| `Senior Citizen` | Cliente possui 65 anos ou mais | Yes, No |
-| `Partner` | Cliente possui parceiro(a) | Yes, No |
-| `Dependents` | Cliente possui dependentes | Yes, No |
+| Variável | Tipo | Descrição | Valores |
+|---|---|---|---|
+| `Gender` | `object` | Gênero do cliente | Male, Female |
+| `Senior Citizen` | `object` | Cliente possui 65 anos ou mais | Yes, No |
+| `Partner` | `object` | Cliente possui parceiro(a) | Yes, No |
+| `Dependents` | `object` | Cliente possui dependentes | Yes, No |
 
 ### 4. Relacionamento com a empresa
 
-| Variável | Descrição |
-|---|---|
-| `Tenure Months` | Quantidade total de meses que o cliente permaneceu na empresa |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `Tenure Months` | `int64` | Quantidade total de meses que o cliente permaneceu na empresa |
 
 ### 5. Serviços de telefonia
 
-| Variável | Descrição | Valores |
-|---|---|---|
-| `Phone Service` | Cliente possui serviço telefônico residencial | Yes, No |
-| `Multiple Lines` | Cliente possui múltiplas linhas telefônicas | Yes, No |
+| Variável | Tipo | Descrição | Valores |
+|---|---|---|---|
+| `Phone Service` | `object` | Cliente possui serviço telefônico residencial | Yes, No |
+| `Multiple Lines` | `object` | Cliente possui múltiplas linhas telefônicas | Yes, No |
 
 ### 6. Serviços de internet
 
-| Variável | Descrição | Valores |
-|---|---|---|
-| `Internet Service` | Tipo de serviço de internet contratado | No, DSL, Fiber Optic, Cable |
-| `Online Security` | Serviço adicional de segurança online | Yes, No |
-| `Online Backup` | Serviço adicional de backup online | Yes, No |
-| `Device Protection` | Plano de proteção de dispositivos | Yes, No |
-| `Tech Support` | Plano adicional de suporte técnico | Yes, No |
-| `Streaming TV` | Uso do serviço para streaming de TV | Yes, No |
-| `Streaming Movies` | Uso do serviço para streaming de filmes | Yes, No |
+| Variável | Tipo | Descrição | Valores |
+|---|---|---|---|
+| `Internet Service` | `object` | Tipo de serviço de internet contratado | No, DSL, Fiber Optic, Cable |
+| `Online Security` | `object` | Serviço adicional de segurança online | Yes, No |
+| `Online Backup` | `object` | Serviço adicional de backup online | Yes, No |
+| `Device Protection` | `object` | Plano de proteção de dispositivos | Yes, No |
+| `Tech Support` | `object` | Plano adicional de suporte técnico | Yes, No |
+| `Streaming TV` | `object` | Uso do serviço para streaming de TV | Yes, No |
+| `Streaming Movies` | `object` | Uso do serviço para streaming de filmes | Yes, No |
 
 ### 7. Contrato e pagamento
 
-| Variável | Descrição | Valores |
-|---|---|---|
-| `Contract` | Tipo de contrato atual | Month-to-Month, One Year, Two Year |
-| `Paperless Billing` | Cliente utiliza cobrança digital | Yes, No |
-| `Payment Method` | Método de pagamento da fatura | Bank Withdrawal, Credit Card, Mailed Check |
+| Variável | Tipo | Descrição | Valores |
+|---|---|---|---|
+| `Contract` | `object` | Tipo de contrato atual | Month-to-Month, One Year, Two Year |
+| `Paperless Billing` | `object` | Cliente utiliza cobrança digital | Yes, No |
+| `Payment Method` | `object` | Método de pagamento da fatura | Bank Withdrawal, Credit Card, Mailed Check |
 
 ### 8. Informações financeiras
 
-| Variável | Descrição |
-|---|---|
-| `Monthly Charge` | Valor mensal atual pago pelo cliente |
-| `Total Charges` | Valor total pago até o final do período analisado |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `Monthly Charges` | `float64` | Valor mensal atual pago pelo cliente |
+| `Total Charges` | `object` | Valor total pago até o final do período analisado |
 
 ## Variáveis relacionadas ao churn
 
 ### 9. Indicadores de churn
 
-| Variável | Descrição |
-|---|---|
-| `Churn Label` | Indica se o cliente deixou a empresa no trimestre |
-| `Churn Value` | Representação numérica do churn (1 = saiu, 0 = permaneceu) |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `Churn Label` | `object` | Indica se o cliente deixou a empresa no trimestre |
+| `Churn Value` | `int64` | Representação numérica do churn (1 = saiu, 0 = permaneceu) |
 
 ### 10. Métricas preditivas
 
-| Variável | Descrição |
-|---|---|
-| `Churn Score` | Score de propensão ao churn (0–100) gerado pelo IBM SPSS Modeler |
-| `CLTV` | Customer Lifetime Value estimado do cliente |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `Churn Score` | `int64` | Score de propensão ao churn (0–100) gerado pelo IBM SPSS Modeler |
+| `CLTV` | `int64` | Customer Lifetime Value estimado do cliente |
 
 ### 11. Motivo do cancelamento
 
-| Variável | Descrição |
-|---|---|
-| `Churn Reason` | Motivo específico pelo qual o cliente deixou a empresa |
+| Variável | Tipo | Descrição |
+|---|---|---|
+| `Churn Reason` | `object` | Motivo específico pelo qual o cliente deixou a empresa |
 
 ## Possíveis categorizações para análise
 
@@ -134,7 +134,7 @@ Os nomes abaixo seguem as colunas do arquivo, incluindo espaços (ex.: `Zip Code
 ### Variáveis numéricas
 
 - `Tenure Months`
-- `Monthly Charge`
+- `Monthly Charges`
 - `Total Charges`
 - `Churn Score`
 - `CLTV`
@@ -170,5 +170,5 @@ Este dataset é altamente adequado para:
 
 | Variável | Tipo | Objetivo |
 |---|---|---|
-| `Churn Label` | Categórica | Predição de churn |
-| `Churn Value` | Binária | Modelagem supervisionada |
+| `Churn Label` | `object` | Predição de churn |
+| `Churn Value` | `int64` | Modelagem supervisionada |
