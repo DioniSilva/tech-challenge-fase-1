@@ -84,7 +84,8 @@ def iter_canvas_fields(canvas: MLCanvas):
     all_fields = [f.name for f in fields(canvas) if f.name != "project_name"]
 
     preferred = [name for name in PREFERRED_ORDER if name in all_fields]
-    remaining = [name for name in all_fields if name not in set(preferred)]
+    preferred_set = set(preferred)
+    remaining = [name for name in all_fields if name not in preferred_set]
     return preferred + remaining
 
 
