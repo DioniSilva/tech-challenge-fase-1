@@ -12,10 +12,14 @@ theme:
 
 extra_css:
   - stylesheets/home.css
+  - stylesheets/ml-canvas.css
 
 nav:
   - Início: index.md
-  - Estrutura do projeto: estrutura-do-projeto.md
-  - Primeiros passos: getting-started.md
-  - Dataset utilizado: dataset.md
-  - Comandos: comandos.md
+  - Projeto:
+      - Visão geral (ML Canvas): ml-canvas.md
+      - Dataset: dataset.md
+      - Estrutura do projeto: estrutura-do-projeto.md
+  - Guia:
+      - Primeiros passos: getting-started.md
+      - Comandos: comandos.md

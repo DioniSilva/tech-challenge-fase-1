@@ -34,3 +34,5 @@ Gerar o site estático em `docs/site/`:
 ```bash
 make docs-build
 ```
+
+Obs: a pagina do ML Canvas e gerada automaticamente (target `make docs-canvas`) ao rodar `make docs`/`make docs-build`.

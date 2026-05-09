@@ -23,12 +23,13 @@ Esta pagina descreve a organizacao de pastas/arquivos do repositorio.
 ├── references/        <- Dicionarios de dados, manuais e materiais de apoio
 ├── reports/           <- Relatorios gerados (HTML, PDF, etc.)
 │   └── figures/       <- Figuras/plots gerados para relatorios
-└── tech_challenge_fase_1/ <- Codigo-fonte do projeto
-    ├── __init__.py    <- Torna `tech_challenge_fase_1` um modulo Python
+└── src/               <- Codigo-fonte do projeto
+    ├── ml_pipeline/   <- Modulos do pipeline de ML
+    ├── utils/         <- Scripts utilitarios (ex.: build de docs)
     └── ...            <- Modulos do projeto (a evoluir)
 ```
 
 ## Notas
 
 - `docs/site/` e um artefato gerado pelo MkDocs (ignorado no git).
-- Se novos modulos/pipelines forem adicionados em `tech_challenge_fase_1/`, mantenha esta pagina atualizada.
+- Se novos modulos/pipelines forem adicionados em `src/`, mantenha esta pagina atualizada.

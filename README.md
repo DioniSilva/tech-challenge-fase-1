@@ -58,11 +58,11 @@ make docs-build
 ├── reports            <- Relatorios gerados (HTML, PDF, etc.)
 │   └── figures        <- Figuras/plots gerados para relatorios
 │
-└── tech_challenge_fase_1   <- Codigo-fonte do projeto
+└── src                       <- Codigo-fonte do projeto
     │
-    ├── __init__.py             <- Torna `tech_challenge_fase_1` um modulo Python
-    │
-    └── ...                     <- Modulos do projeto (a evoluir)
+    ├── ml_pipeline            <- Modulos do pipeline de ML
+    ├── utils                  <- Scripts utilitarios (ex.: build de docs)
+    └── ...                    <- Modulos do projeto (a evoluir)
 ```
 
 --------

@@ -46,6 +46,12 @@ make docs-build
 
 Gera o site estatico em `docs/site/`.
 
+```bash
+make docs-canvas
+```
+
+(Re)gera a pagina do ML Canvas em `docs/docs/ml-canvas.md`.
+
 ## Limpeza
 
 ```bash

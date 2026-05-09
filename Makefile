@@ -41,15 +41,22 @@ test:
 
 
 ## Servir a documentacao localmente (mkdocs)
+
+## (Re)gerar pagina do ML Canvas (MkDocs)
+.PHONY: docs-canvas
+docs-canvas:
+	$(UV_RUN) python src/utils/build_ml_canvas.py --out docs/docs/ml-canvas.md
+
+
 .PHONY: docs docs-serve
-docs:
+docs: docs-canvas
 	$(UV_RUN) mkdocs serve -f docs/mkdocs.yml
 
 docs-serve: docs
 
 ## Gerar o site da documentacao (mkdocs)
 .PHONY: docs-build
-docs-build:
+docs-build: docs-canvas
 	$(UV_RUN) mkdocs build -f docs/mkdocs.yml
 
 
