@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - "docs/**"
+      - "src/ml_pipeline/ml_canvas.py"
+      - "src/utils/build_ml_canvas.py"
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
@@ -33,7 +35,9 @@ jobs:
         run: uv sync --frozen
 
       - name: Build docs
-        run: uv run mkdocs build -f docs/mkdocs.yml --clean
+        run: |
+          uv run python src/utils/build_ml_canvas.py --out docs/docs/ml-canvas.md
+          uv run mkdocs build -f docs/mkdocs.yml --clean
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
