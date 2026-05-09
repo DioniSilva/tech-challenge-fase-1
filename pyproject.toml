@@ -44,7 +44,7 @@ include = ["pyproject.toml", "src/**/*.py"]
 extend-select = ["I"]  # Add import sorting
 
 [tool.ruff.lint.isort]
-known-first-party = ["ml_pipeline"]
+known-first-party = ["ml_pipeline", "utils"]
 force-sort-within-sections = true
 
 
