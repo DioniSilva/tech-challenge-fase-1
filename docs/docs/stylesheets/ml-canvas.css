@@ -1,0 +1,51 @@
+/* ML Canvas page cards (MkDocs theme / Bootstrap). */
+
+.ml-canvas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ml-canvas-card {
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.ml-canvas-card__header {
+  background: #f6f8fa;
+  border-bottom: 1px solid #e2e2e2;
+  font-weight: 600;
+  padding: 10px 12px;
+}
+
+.ml-canvas-card__body {
+  padding: 10px 12px;
+}
+
+.ml-canvas-card__body p {
+  margin: 0;
+}
+
+.ml-canvas-card__body ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.ml-canvas-scroll {
+  max-height: 240px;
+  overflow: auto;
+  padding-right: 6px; /* space for scrollbar */
+}
+
+@media (max-width: 768px) {
+  .ml-canvas-card__header {
+    padding: 9px 10px;
+  }
+
+  .ml-canvas-card__body {
+    padding: 9px 10px;
+  }
+}

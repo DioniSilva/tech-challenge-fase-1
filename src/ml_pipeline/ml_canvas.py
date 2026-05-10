@@ -4,13 +4,33 @@ Auxilia na definição do problema, dados necessários, métricas de sucesso
 e critérios de viabilidade antes de iniciar o desenvolvimento.
 
 Uso:
-    python ml_canvas_exercicio.py
+    python ml_canvas.py
 """
 
-import logging
 from dataclasses import dataclass, field
+import logging
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+def _render_canvas_as_text(canvas: "MLCanvas") -> str:
+    lines: list[str] = []
+    lines.append("=" * 60)
+    lines.append(f"ML CANVAS — {canvas.project_name}")
+    lines.append("=" * 60)
+    lines.append(f"Problema de negócio: {canvas.business_problem}")
+    lines.append(f"Tarefa ML: {canvas.ml_task}")
+    lines.append(f"Variável alvo: {canvas.target}")
+    lines.append(f"Métricas de sucesso: {', '.join(canvas.success_metrics)}")
+    lines.append(f"Fontes de dados: {', '.join(canvas.data_sources)}")
+    lines.append(f"Features candidatas: {', '.join(canvas.features)}")
+    lines.append(f"Restrições: {', '.join(canvas.constraints) or 'Nenhuma'}")
+    lines.append(f"Riscos: {', '.join(canvas.risks) or 'Nenhum'}")
+    lines.append("-" * 60)
+    score = canvas.data_readiness_score()
+    lines.append(f"Data Readiness Score: {score * 100:.0f}%")
+    lines.append(f"Projeto viável: {'✓' if canvas.is_viable() else '✗'}")
+    return "\n".join(lines) + "\n"
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -73,23 +93,11 @@ class MLCanvas:
 
     def display(self) -> None:
         """Exibe o canvas formatado no log."""
-        logger.info("=" * 60)
-        logger.info("ML CANVAS — %s", self.project_name)
-        logger.info("=" * 60)
-        logger.info("Problema de negócio: %s", self.business_problem)
-        logger.info("Tarefa ML: %s", self.ml_task)
-        logger.info("Variável alvo: %s", self.target)
-        logger.info("Métricas de sucesso: %s", ", ".join(self.success_metrics))
-        logger.info("Fontes de dados: %s", ", ".join(self.data_sources))
-        logger.info("Features candidatas: %s", ", ".join(self.features))
-        logger.info("Restrições: %s", ", ".join(self.constraints) or "Nenhuma")
-        logger.info("Riscos: %s", ", ".join(self.risks) or "Nenhum")
-        logger.info("-" * 60)
-        score = self.data_readiness_score()
-        logger.info("Data Readiness Score: %.0f%%", score * 100)
-        logger.info("Projeto viável: %s", "✓" if self.is_viable() else "✗")
+        for line in _render_canvas_as_text(self).splitlines():
+            logger.info("%s", line)
 
 
+# TODO: considerar externalizar este canvas para YAML (fonte de verdade) e gerar a doc automaticamente a partir dele.
 def create_telco_churn_prediction_canvas() -> MLCanvas:
     """Cria ML Canvas para o dataset Telco Churn Prediction.
 
@@ -105,7 +113,39 @@ def create_telco_churn_prediction_canvas() -> MLCanvas:
         ml_task="Rede Neural para classificação binária (Churn: 0/1)",
         success_metrics=["AUC-ROC >= 0.85", "F1-Score >= 0.80", "Precision >= 0.78"],
         data_sources=["Telco_customer_churn.xlsx", "Outras fontes sobre análise de churn"],
-        features=["Count", "Country", "State", "City", "Zip Code", "Lat Long", "Latitude", "Longitude", "Gender", "Senior Citizen", "Partner", "Dependents", "Tenure Months", "Phone Service", "Multiple Lines", "Internet Service", "Online Security", "Online Backup", "Device Protection", "Tech Support", "Streaming TV", "Streaming Movies", "Contract", "Paperless Billing", "Payment Method", "Monthly Charges", "Total Charges", "Churn Label", "Churn Score", "CLTV", "Churn Reason"],
+        features=[
+            "Count",
+            "Country",
+            "State",
+            "City",
+            "Zip Code",
+            "Lat Long",
+            "Latitude",
+            "Longitude",
+            "Gender",
+            "Senior Citizen",
+            "Partner",
+            "Dependents",
+            "Tenure Months",
+            "Phone Service",
+            "Multiple Lines",
+            "Internet Service",
+            "Online Security",
+            "Online Backup",
+            "Device Protection",
+            "Tech Support",
+            "Streaming TV",
+            "Streaming Movies",
+            "Contract",
+            "Paperless Billing",
+            "Payment Method",
+            "Monthly Charges",
+            "Total Charges",
+            "Churn Label",
+            "Churn Score",
+            "CLTV",
+            "Churn Reason",
+        ],
         target="Churn Value",
         constraints=[
             "Dados fictícios — sem possibilidade de coletar mais",
@@ -119,5 +159,6 @@ def create_telco_churn_prediction_canvas() -> MLCanvas:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     canvas = create_telco_churn_prediction_canvas()
     canvas.display()
