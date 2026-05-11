@@ -30,6 +30,12 @@ make docs
 make docs-build
 ```
 
+### MLflow (UI)
+
+```bash
+make run-mlflow
+```
+
 ## Estrutura do Projeto
 
 ```

@@ -60,6 +60,13 @@ docs-build: docs-canvas
 	$(UV_RUN) mkdocs build -f docs/mkdocs.yml
 
 
+## Subir a UI do MLflow (historico local)
+.PHONY: run-mlflow
+run-mlflow:
+	cd data/mlflow_tracking && \
+		$(UV_RUN) mlflow ui
+
+
 ## Apagar arquivos Python compilados
 .PHONY: clean
 clean:
