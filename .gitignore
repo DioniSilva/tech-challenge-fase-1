@@ -1,5 +1,8 @@
 # Data
-/data/
+# Por padrao, mantemos `data/` fora do git. Excecao: tracking leve do MLflow.
+/data/*
+# !/data/mlflow_tracking/
+# !/data/mlflow_tracking/**
 
 # Mac OS-specific storage files
 .DS_Store
@@ -89,6 +92,20 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+
+# MLflow (manter apenas historico leve versionado)
+# - File store: params/metrics/tags/meta em texto.
+# - Artefatos pesados (modelos, figuras, tabelas) ficam fora do git.
+# data/mlflow_tracking/mlruns/**/artifacts/
+# data/mlflow_tracking/mlruns/**/models/
+# data/mlflow_tracking/mlruns/**/outputs/
+# data/mlflow_tracking/mlruns/**/inputs/
+# data/mlflow_tracking/mlruns/**/datasets/
+# data/mlflow_tracking/mlflow.db
+
+# Backward: execucoes antigas nos notebooks (nao versionar)
+notebooks/mlruns/
+notebooks/mlflow.db
 
 # IPython
 profile_default/
