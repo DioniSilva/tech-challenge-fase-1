@@ -107,12 +107,19 @@ def create_telco_churn_prediction_canvas() -> MLCanvas:
     return MLCanvas(
         project_name="TELCO Customer Churn Prediction",
         business_problem=(
-            "Reduzir o Churn através da identificação de clientes "
-            "com perfis de alto risco de saída e alto LTV."
+            "Com base nos dados apresentados, a taxa de churn histórica está girando em torno de 26,5%."
+            "No mercado de Telecom, isso é considerado um churn alto (o ideal para grandes operadoras de telefonia e internet fixa costuma orbitar abaixo de 1.5% a 2% ao mês, o que daria algo entre 18% e 24% ao ano)."
+            "O nosso alvo é trazer essa taxa de 26,5% para a faixa dos 20% a 21% no acumulado."
+            "Para isso precisamos de um modelo que identifique, com alta precisão, os top 10% ou 20% de clientes com maior risco de evasão."
+            "Se conseguirmos agir preventivamente apenas nesse grupo mais crítico disparando uma oferta de retenção ou um upgrade de serviço, já batemos a nossa meta."
         ),
-        ml_task="Rede Neural para classificação binária (Churn: 0/1)",
-        success_metrics=["AUC-ROC >= 0.85", "F1-Score >= 0.80", "Precision >= 0.78"],
-        data_sources=["Telco_customer_churn.xlsx", "Outras fontes sobre análise de churn"],
+        ml_task="Prototipação de um modelo de ML baseline e posterior evolução para Rede Neural para classificação binária (Churn: 0/1)",
+        success_metrics=[
+            "Redução do churn de 26,5% para 20-21% no acumulado nos próximos 12 meses",
+            "Recall >= 0.80", 
+            "Precision >= 0.60"
+        ],
+        data_sources=["Telco_customer_churn.xlsx"],
         features=[
             "Count",
             "Country",
@@ -148,12 +155,19 @@ def create_telco_churn_prediction_canvas() -> MLCanvas:
         ],
         target="Churn Value",
         constraints=[
-            "Dados fictícios — sem possibilidade de coletar mais",
-            "Latência de predição < 100ms",
+            "Ranquamento por Risco: O modelo deve entregar a probabilidade de churn (0% a 100%) e não apenas 'Sim/Não', permitindo que o time de atendimento priorize os clientes mais críticos.",
+            "Explicabilidade (White Box): Precisamos saber por que o cliente está em risco (ex: variáveis mais importantes) para direcionar o argumento de retenção do atendente.",
+            "Valor do Cliente (Margem): A estratégia futura deve diferenciar clientes de alto valor (Fibra/Combos) de clientes de baixa margem (DSL básico)."
         ],
         risks=[
             "Viés de permanência do cliente nos dados",
             "Desbalanceamento de classes (73.5% permanência vs 26.5% churn)",
+            "Mudanças no comportamento do cliente ao longo do tempo",
+            "Dados Faltantes ou Inconsistentes",
+            "Privacidade e LGPD: Garantir que o uso dos dados esteja em conformidade com as regulamentações de privacidade, evitando o uso de informações sensíveis ou identificáveis sem consentimento adequado.",
+            "Fadiga do Cliente: Ligar excessivamente para clientes que o modelo apontou como risco (mas que na verdade estavam satisfeitos) pode gerar o efeito inverso: lembrar o cliente de que ele gasta muito e incentivá-lo a pesquisar a concorrência.",
+            "Viés de Seleção: O dataset é uma foto histórica. Se focarmos apenas em quem já saiu, podemos ignorar padrões de clientes que estão insatisfeitos hoje, mas que têm amarras contratuais diferentes dos clientes do passado.",
+            "Custo de Retenção Ineficiente: Gastar mais dinheiro para reter um cliente (com bônus, upgrades grátis e infraestrutura) do que o valor real que ele trará de retorno financeiro para a empresa no tempo de vida restante dele."
         ],
     )
 

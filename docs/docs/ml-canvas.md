@@ -2,7 +2,7 @@
 
 Documentacao das definicoes do ML Canvas para o projeto de churn prediction.
 
-> Data Readiness Score: 100%
+> Data Readiness Score: 80%
 >
 > Projeto viavel: Sim
 
@@ -14,12 +14,12 @@ Para atualizar esta pagina, rode: `make docs-canvas`
 
 <section class="ml-canvas-card">
   <header class="ml-canvas-card__header">Problema de negocio</header>
-  <div class="ml-canvas-card__body"><p>Reduzir o Churn através da identificação de clientes com perfis de alto risco de saída e alto LTV.</p></div>
+  <div class="ml-canvas-card__body"><p>Com base nos dados apresentados, a taxa de churn histórica está girando em torno de 26,5%.No mercado de Telecom, isso é considerado um churn alto (o ideal para grandes operadoras de telefonia e internet fixa costuma orbitar abaixo de 1.5% a 2% ao mês, o que daria algo entre 18% e 24% ao ano).O nosso alvo é trazer essa taxa de 26,5% para a faixa dos 20% a 21% no acumulado.Para isso precisamos de um modelo que identifique, com alta precisão, os top 10% ou 20% de clientes com maior risco de evasão.Se conseguirmos agir preventivamente apenas nesse grupo mais crítico disparando uma oferta de retenção ou um upgrade de serviço, já batemos a nossa meta.</p></div>
 </section>
 
 <section class="ml-canvas-card">
   <header class="ml-canvas-card__header">Tarefa ML</header>
-  <div class="ml-canvas-card__body"><p>Rede Neural para classificação binária (Churn: 0/1)</p></div>
+  <div class="ml-canvas-card__body"><p>Prototipação de um modelo de ML baseline e posterior evolução para Rede Neural para classificação binária (Churn: 0/1)</p></div>
 </section>
 
 <section class="ml-canvas-card">
@@ -30,9 +30,9 @@ Para atualizar esta pagina, rode: `make docs-canvas`
 <section class="ml-canvas-card">
   <header class="ml-canvas-card__header">Metricas de sucesso</header>
   <div class="ml-canvas-card__body"><ul>
-<li>AUC-ROC &gt;= 0.85</li>
-<li>F1-Score &gt;= 0.80</li>
-<li>Precision &gt;= 0.78</li>
+<li>Redução do churn de 26,5% para 20-21% no acumulado nos próximos 12 meses</li>
+<li>Recall &gt;= 0.80</li>
+<li>Precision &gt;= 0.60</li>
 </ul></div>
 </section>
 
@@ -40,7 +40,6 @@ Para atualizar esta pagina, rode: `make docs-canvas`
   <header class="ml-canvas-card__header">Fontes de dados</header>
   <div class="ml-canvas-card__body"><ul>
 <li>Telco_customer_churn.xlsx</li>
-<li>Outras fontes sobre análise de churn</li>
 </ul></div>
 </section>
 
@@ -84,8 +83,9 @@ Para atualizar esta pagina, rode: `make docs-canvas`
 <section class="ml-canvas-card">
   <header class="ml-canvas-card__header">Restricoes</header>
   <div class="ml-canvas-card__body"><ul>
-<li>Dados fictícios — sem possibilidade de coletar mais</li>
-<li>Latência de predição &lt; 100ms</li>
+<li>Ranquamento por Risco: O modelo deve entregar a probabilidade de churn (0% a 100%) e não apenas &#x27;Sim/Não&#x27;, permitindo que o time de atendimento priorize os clientes mais críticos.</li>
+<li>Explicabilidade (White Box): Precisamos saber por que o cliente está em risco (ex: variáveis mais importantes) para direcionar o argumento de retenção do atendente.</li>
+<li>Valor do Cliente (Margem): A estratégia futura deve diferenciar clientes de alto valor (Fibra/Combos) de clientes de baixa margem (DSL básico).</li>
 </ul></div>
 </section>
 
@@ -94,6 +94,12 @@ Para atualizar esta pagina, rode: `make docs-canvas`
   <div class="ml-canvas-card__body"><ul>
 <li>Viés de permanência do cliente nos dados</li>
 <li>Desbalanceamento de classes (73.5% permanência vs 26.5% churn)</li>
+<li>Mudanças no comportamento do cliente ao longo do tempo</li>
+<li>Dados Faltantes ou Inconsistentes</li>
+<li>Privacidade e LGPD: Garantir que o uso dos dados esteja em conformidade com as regulamentações de privacidade, evitando o uso de informações sensíveis ou identificáveis sem consentimento adequado.</li>
+<li>Fadiga do Cliente: Ligar excessivamente para clientes que o modelo apontou como risco (mas que na verdade estavam satisfeitos) pode gerar o efeito inverso: lembrar o cliente de que ele gasta muito e incentivá-lo a pesquisar a concorrência.</li>
+<li>Viés de Seleção: O dataset é uma foto histórica. Se focarmos apenas em quem já saiu, podemos ignorar padrões de clientes que estão insatisfeitos hoje, mas que têm amarras contratuais diferentes dos clientes do passado.</li>
+<li>Custo de Retenção Ineficiente: Gastar mais dinheiro para reter um cliente (com bônus, upgrades grátis e infraestrutura) do que o valor real que ele trará de retorno financeiro para a empresa no tempo de vida restante dele.</li>
 </ul></div>
 </section>
 
