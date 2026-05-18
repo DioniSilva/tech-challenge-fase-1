@@ -15,7 +15,8 @@
 </head>
 <body>
 
-<h1>Plano de Projeto - Etapas</h1>
+<h1>Plano de Projeto sugerido</h1>
+Cada integrante deve por favor identificar com quais atividades estão mais familiarizados, escrever seu nome na coluna "Responsável" e confirmar a data sugerida. Uma vez que a atividade é entregue e revisada, preencher com "Feito".
 
 <!-- Etapas 1 a 4 já existentes -->
 
