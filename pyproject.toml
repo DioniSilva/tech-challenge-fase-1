@@ -16,8 +16,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 dependencies = [
+    "fairlearn>=0.13.0",
     "fastapi>=0.136.1",
+    "huggingface-hub>=1.16.1",
     "ipython",
+    "jinja2>=3.1.6",
     "jupyterlab",
     "matplotlib",
     "mkdocs",
@@ -31,6 +34,7 @@ dependencies = [
     "ruff",
     "scikit-learn",
     "seaborn>=0.13.2",
+    "tabulate>=0.10.0",
     "uvicorn>=0.46.0",
 ]
 requires-python = "~=3.12.0"
