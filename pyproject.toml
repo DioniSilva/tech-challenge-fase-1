@@ -39,6 +39,7 @@ dependencies = [
     "imbalanced-learn>=0.11.0",
     "openpyxl>=3.1.5",
     "torch>=2.12.0",
+    "great-tables>=0.9.0",
 ]
 requires-python = "~=3.12.0"
 
