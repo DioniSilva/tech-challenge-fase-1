@@ -14,7 +14,7 @@
 - Tests: `make test` runs `uv run pytest tests`; for one file use `uv run pytest tests/test_data.py`.
 - Docs: `make docs` serves MkDocs using `docs/mkdocs.yml`; `make docs-build` builds to `docs/site/`.
 - `make docs` and `make docs-build` both regenerate `docs/docs/ml-canvas.md` via `make docs-canvas` first.
-- MLflow UI: `make run-mlflow` changes into `data/mlflow_tracking` and runs `uv run mlflow ui`, serving `http://127.0.0.1:5000`.
+- MLflow UI: `make run-mlflow` serves `sqlite:///data/mlflow_tracking/mlflow.db` with artifacts under `data/mlflow_tracking/artifacts`, at `http://127.0.0.1:5000`.
 
 ## Current Repo Shape
 
@@ -27,6 +27,6 @@
 
 - `make test` currently fails because `tests/test_data.py` contains a placeholder `assert False`; fix or replace it before treating tests as a signal.
 - `src/utils/mlflow_logger.py` currently uses `print()` and Unicode status symbols; the challenge requires structured logging and no `print()` in production code.
-- `.gitignore` ignores `/data/*`, so raw/processed data and local MLflow stores are not versioned by default.
+- `.gitignore` ignores `/data/*`, so raw/processed data and local MLflow stores are not versioned by default; the canonical local MLflow backend is `data/mlflow_tracking/mlflow.db` plus `data/mlflow_tracking/artifacts/`.
 - `.gitignore` also ignores `uv.lock` even though the README describes it as the reproducibility lockfile; verify desired tracking before modifying lockfile behavior.
 - Ruff only includes `pyproject.toml` and `src/**/*.py`; tests are not linted by the current config unless the config is changed.

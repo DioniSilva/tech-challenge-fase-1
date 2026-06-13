@@ -1,8 +1,0 @@
-artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/notebooks/../data/mlflow_tracking/mlruns/971373804994683566
-creation_time: 1778534556579
-experiment_id: '971373804994683566'
-last_update_time: 1778534556579
-lifecycle_stage: active
-name: churn_model_classification
-trace_location: null
-workspace: default

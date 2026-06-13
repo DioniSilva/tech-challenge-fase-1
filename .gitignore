@@ -93,15 +93,11 @@ target/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# MLflow (manter apenas historico leve versionado)
-# - File store: params/metrics/tags/meta em texto.
-# - Artefatos pesados (modelos, figuras, tabelas) ficam fora do git.
-# data/mlflow_tracking/mlruns/**/artifacts/
-# data/mlflow_tracking/mlruns/**/models/
-# data/mlflow_tracking/mlruns/**/outputs/
-# data/mlflow_tracking/mlruns/**/inputs/
-# data/mlflow_tracking/mlruns/**/datasets/
-# data/mlflow_tracking/mlflow.db
+# MLflow local canonico: SQLite em data/mlflow_tracking/mlflow.db
+# e artefatos em data/mlflow_tracking/artifacts/ (ambos fora do git por /data/*).
+# File stores antigos em data/mlflow_tracking/mlruns/ e notebooks/mlruns/ sao legado.
+data/mlflow_tracking/mlruns/
+data/mlflow_tracking/[0-9]*/
 
 # Backward: execucoes antigas nos notebooks (nao versionar)
 notebooks/mlruns/

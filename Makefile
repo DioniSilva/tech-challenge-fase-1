@@ -63,8 +63,10 @@ docs-build: docs-canvas
 ## Subir a UI do MLflow (historico local)
 .PHONY: run-mlflow
 run-mlflow:
-	cd data/mlflow_tracking && \
-		$(UV_RUN) mlflow ui
+	mkdir -p data/mlflow_tracking/artifacts
+	$(UV_RUN) mlflow ui \
+		--backend-store-uri sqlite:///data/mlflow_tracking/mlflow.db \
+		--default-artifact-root file:$(CURDIR)/data/mlflow_tracking/artifacts
 
 
 ## Apagar arquivos Python compilados

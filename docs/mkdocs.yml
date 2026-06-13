@@ -20,6 +20,7 @@ nav:
       - Model Card: MODEL_CARD.md
       - Visão geral (ML Canvas): ml-canvas.md
       - Dataset: dataset.md
+      - Experimentos Etapas 1 e 2: experimentos-etapas-1-2.md
       - Estrutura do projeto: estrutura-do-projeto.md
   - Guia:
       - Primeiros passos: getting-started.md

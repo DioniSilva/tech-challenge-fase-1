@@ -1,0 +1,23 @@
+artifact_path: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/artifacts/Tech%20Challenge%20-%20Etapa%202/models/m-2f696d93cb334f018947e26794724f3e/artifacts
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.12.12
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.12.0
+mlflow_version: 3.12.0
+model_id: m-2f696d93cb334f018947e26794724f3e
+model_size_bytes: 25507
+model_uuid: m-2f696d93cb334f018947e26794724f3e
+prompts: null
+run_id: 9caf2aa62c6d44f78c58d5a6f9f6b873
+utc_time_created: '2026-06-13 20:43:41.990929'
