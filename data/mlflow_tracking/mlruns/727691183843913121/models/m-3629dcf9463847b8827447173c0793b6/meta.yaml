@@ -1,0 +1,10 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/727691183843913121/models/m-3629dcf9463847b8827447173c0793b6/artifacts
+creation_timestamp: 1780358913735
+experiment_id: '727691183843913121'
+last_updated_timestamp: 1780358913974
+model_id: m-3629dcf9463847b8827447173c0793b6
+model_type: null
+name: nn_baseline
+source_run_id: 5a17e49e0e1e4b51bc6fb41c155fd0c4
+status: 2
+status_message: null

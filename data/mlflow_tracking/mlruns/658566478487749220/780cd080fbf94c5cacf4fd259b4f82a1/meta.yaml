@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/658566478487749220/780cd080fbf94c5cacf4fd259b4f82a1/artifacts
+end_time: 1780357838831
+entry_point_name: ''
+experiment_id: '658566478487749220'
+lifecycle_stage: active
+run_id: 780cd080fbf94c5cacf4fd259b4f82a1
+run_name: Default Run
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1780357838208
+status: 3
+tags: []
+user_id: dionatasantosdasilva

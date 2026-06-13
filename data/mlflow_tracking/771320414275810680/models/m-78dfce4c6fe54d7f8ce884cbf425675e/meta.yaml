@@ -1,0 +1,10 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/771320414275810680/models/m-78dfce4c6fe54d7f8ce884cbf425675e/artifacts
+creation_timestamp: 1779669575083
+experiment_id: '771320414275810680'
+last_updated_timestamp: 1779669575244
+model_id: m-78dfce4c6fe54d7f8ce884cbf425675e
+model_type: null
+name: pytorch_logistic
+source_run_id: 7ce6135405ee477ab4426db3888f2fd8
+status: 2
+status_message: null

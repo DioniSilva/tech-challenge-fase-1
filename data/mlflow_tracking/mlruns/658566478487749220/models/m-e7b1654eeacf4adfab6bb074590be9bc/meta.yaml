@@ -1,0 +1,10 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/658566478487749220/models/m-e7b1654eeacf4adfab6bb074590be9bc/artifacts
+creation_timestamp: 1779752264810
+experiment_id: '658566478487749220'
+last_updated_timestamp: 1779752265009
+model_id: m-e7b1654eeacf4adfab6bb074590be9bc
+model_type: null
+name: Default Model
+source_run_id: 0a88bea45bff430b8e345e54bb6b76e0
+status: 2
+status_message: null

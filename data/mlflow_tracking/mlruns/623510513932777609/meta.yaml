@@ -1,0 +1,8 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/623510513932777609
+creation_time: 1779671380603
+experiment_id: '623510513932777609'
+last_update_time: 1779671380603
+lifecycle_stage: active
+name: Telco Churn Customer Analysis
+trace_location: null
+workspace: default

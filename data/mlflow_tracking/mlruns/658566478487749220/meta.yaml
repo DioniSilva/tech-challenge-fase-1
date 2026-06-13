@@ -1,0 +1,8 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/658566478487749220
+creation_time: 1779752264464
+experiment_id: '658566478487749220'
+last_update_time: 1779752264464
+lifecycle_stage: active
+name: ML Experiments
+trace_location: null
+workspace: default

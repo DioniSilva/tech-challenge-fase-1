@@ -1,0 +1,10 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/notebooks/../data/mlflow_tracking/mlruns/971373804994683566/models/m-0e27ac38fcf24675b2a1ab58dc404e9e/artifacts
+creation_timestamp: 1778534558655
+experiment_id: '971373804994683566'
+last_updated_timestamp: 1778534559858
+model_id: m-0e27ac38fcf24675b2a1ab58dc404e9e
+model_type: null
+name: logistic_regression_model
+source_run_id: null
+status: 2
+status_message: null

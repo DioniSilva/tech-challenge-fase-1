@@ -1,0 +1,9 @@
+Modelo de Rede Neural para Previsão de Churn.
+
+Arquitetura da Rede Neural: 
+
+ NeuralNetwork(
+  (layer1): Linear(in_features=31, out_features=16, bias=True)
+  (relu): ReLU()
+  (layer2): Linear(in_features=16, out_features=1, bias=True)
+)

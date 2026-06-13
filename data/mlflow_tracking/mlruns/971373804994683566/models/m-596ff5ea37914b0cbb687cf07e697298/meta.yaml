@@ -1,0 +1,10 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/notebooks/../data/mlflow_tracking/mlruns/971373804994683566/models/m-596ff5ea37914b0cbb687cf07e697298/artifacts
+creation_timestamp: 1778534661212
+experiment_id: '971373804994683566'
+last_updated_timestamp: 1778534662772
+model_id: m-596ff5ea37914b0cbb687cf07e697298
+model_type: null
+name: baseline_model
+source_run_id: a2e2152fa8d94a75a49be9dc395a68a2
+status: 2
+status_message: null

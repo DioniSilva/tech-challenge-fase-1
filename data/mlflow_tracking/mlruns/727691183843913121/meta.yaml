@@ -1,0 +1,8 @@
+artifact_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/727691183843913121
+creation_time: 1780358650961
+experiment_id: '727691183843913121'
+last_update_time: 1780358650961
+lifecycle_stage: active
+name: Modelagem de Rede Neural
+trace_location: null
+workspace: default

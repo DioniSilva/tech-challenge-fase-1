@@ -1,0 +1,9 @@
+
+                                Modelo treinado usando PyTorch. 
+                                
+                                Arquitetura: NeuralNetwork(
+  (linear): Linear(in_features=31, out_features=1, bias=True)
+)
+
+                                Verifique os detalhes do modelo e pesos na pasta de artefatos.
+                                

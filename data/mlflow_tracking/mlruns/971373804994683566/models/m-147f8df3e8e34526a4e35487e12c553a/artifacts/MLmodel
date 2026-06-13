@@ -1,0 +1,23 @@
+artifact_path: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/notebooks/../data/mlflow_tracking/mlruns/971373804994683566/models/m-147f8df3e8e34526a4e35487e12c553a/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.12.12
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.12.0
+model_id: m-147f8df3e8e34526a4e35487e12c553a
+model_size_bytes: 1799
+model_uuid: m-147f8df3e8e34526a4e35487e12c553a
+prompts: null
+run_id: b6ed3b1d86164b22916379f9deabc336
+utc_time_created: '2026-05-11 21:25:47.557181'

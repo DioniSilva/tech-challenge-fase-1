@@ -1,0 +1,16 @@
+creation_timestamp: 1779492825335
+current_stage: None
+deployment_job_state: null
+description: Modelo de Baseline
+last_updated_timestamp: 1779498409858
+model_id: m-fec09a8e87e54d99a8099ea3cd34e46f
+name: Baseline Churn Prediction Model
+run_id: 9b6def1f3cde4c1ca8a6e00599d6c122
+run_link: ''
+source: models:/m-fec09a8e87e54d99a8099ea3cd34e46f
+status: READY
+status_message: null
+storage_location: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/notebooks/../data/mlflow_tracking/mlruns/971373804994683566/models/m-fec09a8e87e54d99a8099ea3cd34e46f/artifacts
+user_id: null
+version: 1
+workspace: default

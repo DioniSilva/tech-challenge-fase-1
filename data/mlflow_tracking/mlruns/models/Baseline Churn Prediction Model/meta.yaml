@@ -1,0 +1,8 @@
+aliases: {}
+creation_timestamp: 1779492825326
+deployment_job_id: null
+deployment_job_state: null
+description: Modelo base para predição de Churn
+last_updated_timestamp: 1779492902703
+name: Baseline Churn Prediction Model
+workspace: default

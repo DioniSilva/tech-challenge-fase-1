@@ -1,0 +1,32 @@
+digest: 2b69885a
+name: pytorch_logistic_train
+profile: '{"num_rows": 5634, "num_elements": 174654}'
+schema: '{"mlflow_colspec": [{"type": "double", "name": "monthly_charges", "required":
+  true}, {"type": "double", "name": "average_monthly_spend", "required": true}, {"type":
+  "double", "name": "gender_male", "required": true}, {"type": "double", "name": "senior_citizen_yes",
+  "required": true}, {"type": "double", "name": "partner_yes", "required": true},
+  {"type": "double", "name": "dependents_yes", "required": true}, {"type": "double",
+  "name": "phone_service_yes", "required": true}, {"type": "double", "name": "multiple_lines_no_phone_service",
+  "required": true}, {"type": "double", "name": "multiple_lines_yes", "required":
+  true}, {"type": "double", "name": "internet_service_fiber_optic", "required": true},
+  {"type": "double", "name": "internet_service_no", "required": true}, {"type": "double",
+  "name": "online_security_no_internet_service", "required": true}, {"type": "double",
+  "name": "online_security_yes", "required": true}, {"type": "double", "name": "online_backup_no_internet_service",
+  "required": true}, {"type": "double", "name": "online_backup_yes", "required": true},
+  {"type": "double", "name": "device_protection_no_internet_service", "required":
+  true}, {"type": "double", "name": "device_protection_yes", "required": true}, {"type":
+  "double", "name": "tech_support_no_internet_service", "required": true}, {"type":
+  "double", "name": "tech_support_yes", "required": true}, {"type": "double", "name":
+  "streaming_tv_no_internet_service", "required": true}, {"type": "double", "name":
+  "streaming_tv_yes", "required": true}, {"type": "double", "name": "streaming_movies_no_internet_service",
+  "required": true}, {"type": "double", "name": "streaming_movies_yes", "required":
+  true}, {"type": "double", "name": "contract_one_year", "required": true}, {"type":
+  "double", "name": "contract_two_year", "required": true}, {"type": "double", "name":
+  "paperless_billing_yes", "required": true}, {"type": "double", "name": "payment_method_credit_card_automatic",
+  "required": true}, {"type": "double", "name": "payment_method_electronic_check",
+  "required": true}, {"type": "double", "name": "payment_method_mailed_check", "required":
+  true}, {"type": "double", "name": "latitude", "required": true}, {"type": "double",
+  "name": "longitude", "required": true}]}'
+source: '{"tags": {"mlflow.user": "dionatasantosdasilva", "mlflow.source.name": "01-NN-model-train.ipynb",
+  "mlflow.source.type": "NOTEBOOK"}}'
+source_type: code

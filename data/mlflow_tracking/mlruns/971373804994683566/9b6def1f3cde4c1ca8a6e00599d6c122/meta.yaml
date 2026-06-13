@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/notebooks/../data/mlflow_tracking/mlruns/971373804994683566/9b6def1f3cde4c1ca8a6e00599d6c122/artifacts
+end_time: 1778534558626
+entry_point_name: ''
+experiment_id: '971373804994683566'
+lifecycle_stage: active
+run_id: 9b6def1f3cde4c1ca8a6e00599d6c122
+run_name: best_logistic_regression_model
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1778534556829
+status: 3
+tags: []
+user_id: dionatasantosdasilva

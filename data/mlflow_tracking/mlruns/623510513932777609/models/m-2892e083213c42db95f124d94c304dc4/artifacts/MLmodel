@@ -1,0 +1,55 @@
+artifact_path: file:///Users/dionatasantosdasilva/dev/repos/personal/postech-ml/tech-challenge-fase-1/data/mlflow_tracking/mlruns/623510513932777609/models/m-2892e083213c42db95f124d94c304dc4/artifacts
+flavors:
+  python_function:
+    config:
+      device: null
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pytorch
+    pickle_module_name: mlflow.pytorch.pickle_module
+    python_version: 3.12.12
+  pytorch:
+    code: null
+    model_data: data
+    pytorch_version: 2.12.0
+is_signature_from_type_hint: false
+mlflow_version: 3.12.0
+model_id: m-2892e083213c42db95f124d94c304dc4
+model_size_bytes: 4657
+model_uuid: m-2892e083213c42db95f124d94c304dc4
+prompts: null
+run_id: 5e3ed68d764844af940b1985b5f286b8
+signature:
+  inputs: '[{"type": "double", "name": "monthly_charges", "required": true}, {"type":
+    "double", "name": "average_monthly_spend", "required": true}, {"type": "double",
+    "name": "gender_male", "required": true}, {"type": "double", "name": "senior_citizen_yes",
+    "required": true}, {"type": "double", "name": "partner_yes", "required": true},
+    {"type": "double", "name": "dependents_yes", "required": true}, {"type": "double",
+    "name": "phone_service_yes", "required": true}, {"type": "double", "name": "multiple_lines_no_phone_service",
+    "required": true}, {"type": "double", "name": "multiple_lines_yes", "required":
+    true}, {"type": "double", "name": "internet_service_fiber_optic", "required":
+    true}, {"type": "double", "name": "internet_service_no", "required": true}, {"type":
+    "double", "name": "online_security_no_internet_service", "required": true}, {"type":
+    "double", "name": "online_security_yes", "required": true}, {"type": "double",
+    "name": "online_backup_no_internet_service", "required": true}, {"type": "double",
+    "name": "online_backup_yes", "required": true}, {"type": "double", "name": "device_protection_no_internet_service",
+    "required": true}, {"type": "double", "name": "device_protection_yes", "required":
+    true}, {"type": "double", "name": "tech_support_no_internet_service", "required":
+    true}, {"type": "double", "name": "tech_support_yes", "required": true}, {"type":
+    "double", "name": "streaming_tv_no_internet_service", "required": true}, {"type":
+    "double", "name": "streaming_tv_yes", "required": true}, {"type": "double", "name":
+    "streaming_movies_no_internet_service", "required": true}, {"type": "double",
+    "name": "streaming_movies_yes", "required": true}, {"type": "double", "name":
+    "contract_one_year", "required": true}, {"type": "double", "name": "contract_two_year",
+    "required": true}, {"type": "double", "name": "paperless_billing_yes", "required":
+    true}, {"type": "double", "name": "payment_method_credit_card_automatic", "required":
+    true}, {"type": "double", "name": "payment_method_electronic_check", "required":
+    true}, {"type": "double", "name": "payment_method_mailed_check", "required": true},
+    {"type": "double", "name": "latitude", "required": true}, {"type": "double", "name":
+    "longitude", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "int64", "shape": [-1, 1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-05-25 22:47:07.918427'
