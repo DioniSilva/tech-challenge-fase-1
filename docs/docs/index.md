@@ -23,6 +23,7 @@
       <a class="btn btn-default btn-lg" href="comandos/">Comandos</a>
       <a class="btn btn-default btn-lg" href="ml-canvas/">ML Canvas</a>
       <a class="btn btn-default btn-lg" href="dataset/">Dataset</a>
+      <a class="btn btn-default btn-lg" href="comparativo-modelos/">Comparativo entre Modelos</a>
     </div>
   </div>
 </div>
@@ -92,6 +93,16 @@
           <p>
             A pagina <a href="dataset/">Dataset</a> descreve a fonte e o dicionario de dados
             do Telco Customer Churn (IBM).
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="home-card">
+          <h3>Comparativo entre Modelos</h3>
+          <p>
+            A pagina <a href="comparativo-modelos/">Comparativo entre Modelos</a> demonstra uma comparação de métricas 
+            e custo/benefício entre alguns modelos testados.
           </p>
         </div>
       </div>
