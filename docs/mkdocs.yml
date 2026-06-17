@@ -21,6 +21,7 @@ nav:
       - Visão geral (ML Canvas): ml-canvas.md
       - Dataset: dataset.md
       - Estrutura do projeto: estrutura-do-projeto.md
+      - Comparação de Modelos: comparativo-modelos.md
   - Guia:
       - Primeiros passos: getting-started.md
       - Comandos: comandos.md
