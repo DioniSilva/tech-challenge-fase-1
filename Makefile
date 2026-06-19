@@ -37,7 +37,7 @@ format:
 ## Executar testes
 .PHONY: test
 test:
-	$(UV_RUN) pytest tests
+	$(UV_RUN) pytest tests --ignore=src/ml_pipeline
 
 
 ## Servir a documentacao localmente (mkdocs)
