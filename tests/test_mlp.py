@@ -38,3 +38,37 @@ def test_torch_mlp_classifier_fit_predict_proba_predict():
     preds = classifier.predict(X)
     assert preds.shape == (20,)
     assert set(preds).issubset({0, 1})
+
+
+def test_torch_mlp_classifier_direct_smoke():
+    X = pd.DataFrame(
+        {
+            "feature_a": np.random.rand(12),
+            "feature_b": np.random.rand(12),
+            "feature_c": np.random.rand(12),
+        }
+    )
+    y = np.array([0, 1] * 6)
+
+    classifier = TorchMLPClassifier(
+        input_dim=3,
+        hidden_dims=(8, 4),
+        epochs=1,
+        patience=1,
+        batch_size=4,
+        random_state=123,
+        verbose=0,
+    )
+
+    classifier.fit(X, y)
+
+    assert classifier.is_fitted_
+    assert classifier.classes_.shape == (2,)
+
+    proba = classifier.predict_proba(X)
+    preds = classifier.predict(X)
+
+    assert proba.shape == (12, 2)
+    assert preds.shape == (12,)
+    assert np.allclose(proba.sum(axis=1), np.ones(12), atol=1e-6)
+    assert set(preds).issubset({0, 1})

@@ -39,6 +39,10 @@ format:
 test:
 	$(UV_RUN) pytest tests --ignore=src/ml_pipeline
 
+.PHONY: smoke
+smoke:
+	$(UV_RUN) pytest tests/test_smoke_pipeline.py tests/test_mlp.py --ignore=src/ml_pipeline -q
+
 
 ## Servir a documentacao localmente (mkdocs)
 
