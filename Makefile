@@ -71,6 +71,18 @@ run-mlflow:
 		$(UV_RUN) mlflow ui
 
 
+## Executar a API FastAPI (desenvolvimento com reload)
+.PHONY: api-run
+api-run:
+	$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload
+
+
+## Validar a API (verificar imports e estrutura)
+.PHONY: api-validate
+api-validate:
+	$(PYTHON_INTERPRETER) validate_api.py
+
+
 ## Apagar arquivos Python compilados
 .PHONY: clean
 clean:

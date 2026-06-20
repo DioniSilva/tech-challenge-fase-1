@@ -32,6 +32,7 @@ dependencies = [
     "pytest",
     "pytest-sugar",
     "pandera>=0.21.0",
+    "pydantic-settings>=2.0.0",
     "python-dotenv",
     "ruff",
     "scikit-learn",
