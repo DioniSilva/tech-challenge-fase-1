@@ -1,7 +1,8 @@
 from typing import Optional, Tuple
 
 import numpy as np
-from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.base import BaseEstimator, ClassifierMixin, clone
+from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.utils.validation import check_is_fitted
 import torch
 import torch.nn as nn
@@ -213,6 +214,43 @@ class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
         logger.info(f"Treinamento concluído. Modelo ajustado com {len(self.classes_)} classes.")
 
         return self
+
+    def cross_validate(
+        self,
+        X,
+        y,
+        cv: int = 5,
+        scoring="accuracy",
+        return_train_score: bool = False,
+        n_jobs: int = 1,
+        refit: bool = False,
+    ) -> dict:
+        """Executa validação cruzada usando o mesmo classificador sklearn-compatible.
+
+        O método utiliza `StratifiedKFold` para preservar a proporção das classes em cada fold.
+        Se `refit=True`, o estimador atual é treinado novamente com todo o conjunto após a validação.
+        """
+        cv_splitter = StratifiedKFold(
+            n_splits=cv,
+            shuffle=True,
+            random_state=self.random_state,
+        )
+
+        result = cross_validate(
+            clone(self),
+            X,
+            y,
+            scoring=scoring,
+            cv=cv_splitter,
+            return_train_score=return_train_score,
+            n_jobs=n_jobs,
+            error_score=np.nan,
+        )
+
+        if refit:
+            self.fit(X, y)
+
+        return result
 
     def predict_proba(self, X):
         check_is_fitted(self, "is_fitted_")
