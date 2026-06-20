@@ -78,8 +78,8 @@ run-mlflow:
 ## Executar o projeto e a API, conforme existencia do modelo
 ## Se models/mlp.joblib não existir, roda src/main.py para treinar o modelo
 ## Inicia a API FastAPI em src/api_main.py
-.PHONY: run
-run:
+.PHONY: serve
+serve:
 	if [ ! -f models/mlp.joblib ]; then \
 		$(PYTHON_INTERPRETER) src/main.py; \
 	fi
@@ -87,8 +87,8 @@ run:
 	$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload; \
 
 ## Gerar o modelo MLP rodando o treinamento completo
-.PHONY: build-mlp
-build-mlp:
+.PHONY: train
+train:
 	$(PYTHON_INTERPRETER) src/main.py
 
 ## Validar a API (verificar imports e estrutura)
