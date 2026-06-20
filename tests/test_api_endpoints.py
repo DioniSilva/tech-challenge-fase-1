@@ -2,6 +2,7 @@
 Testes de endpoints da API com pytest.
 Utiliza TestClient do FastAPI para testes sem servidor real.
 """
+import json
 import sys
 from pathlib import Path
 
@@ -66,7 +67,7 @@ class TestRootEndpoint:
         """Testa se o endpoint raiz retorna estrutura esperada."""
         response = client.get("/")
         data = response.json()
-        
+
         assert "name" in data
         assert "version" in data
         assert "docs" in data
@@ -85,7 +86,7 @@ class TestHealthEndpoint:
         """Testa se health check retorna schema correto."""
         response = client.get("/api/v1/health")
         data = response.json()
-        
+
         assert "status" in data
         assert "message" in data
         assert "version" in data
@@ -94,14 +95,14 @@ class TestHealthEndpoint:
         """Testa se status é 'healthy'."""
         response = client.get("/api/v1/health")
         data = response.json()
-        
+
         assert data["status"] in ["healthy", "unhealthy"]
 
     def test_health_has_version(self, client):
         """Testa se versão está presente."""
         response = client.get("/api/v1/health")
         data = response.json()
-        
+
         assert data["version"] is not None
         assert len(data["version"]) > 0
 
@@ -118,7 +119,7 @@ class TestPredictEndpoint:
         """Testa se predict retorna schema correto."""
         response = client.post("/api/v1/predict", json=valid_customer_data)
         data = response.json()
-        
+
         assert "customer_id" in data
         assert "prediction" in data
         assert "prediction_label" in data
@@ -129,7 +130,7 @@ class TestPredictEndpoint:
         """Testa se predição retorna valores válidos."""
         response = client.post("/api/v1/predict", json=valid_customer_data)
         data = response.json()
-        
+
         # Verificar tipos
         assert isinstance(data["customer_id"], str)
         assert isinstance(data["prediction"], int)
@@ -141,14 +142,14 @@ class TestPredictEndpoint:
         """Testa se predição é 0 ou 1."""
         response = client.post("/api/v1/predict", json=valid_customer_data)
         data = response.json()
-        
+
         assert data["prediction"] in [0, 1]
 
     def test_predict_label_matches_prediction(self, client, valid_customer_data):
         """Testa se label corresponde à predição."""
         response = client.post("/api/v1/predict", json=valid_customer_data)
         data = response.json()
-        
+
         if data["prediction"] == 0:
             assert data["prediction_label"] == "No"
         else:
@@ -158,7 +159,7 @@ class TestPredictEndpoint:
         """Testa se probabilidade está entre 0 e 1."""
         response = client.post("/api/v1/predict", json=valid_customer_data)
         data = response.json()
-        
+
         assert 0.0 <= data["prediction_probability"] <= 1.0
         assert 0.0 <= data["confidence"] <= 1.0
 
@@ -166,21 +167,21 @@ class TestPredictEndpoint:
         """Testa se customer_id é preservado na resposta."""
         response = client.post("/api/v1/predict", json=valid_customer_data)
         data = response.json()
-        
+
         assert data["customer_id"] == valid_customer_data["customer_id"]
 
     def test_predict_returns_400_with_missing_fields(self, client):
         """Testa se predict retorna 400 com dados incompletos."""
         incomplete_data = {"customer_id": "TEST-002"}
         response = client.post("/api/v1/predict", json=incomplete_data)
-        
+
         assert response.status_code == 422  # Unprocessable Entity
 
     def test_predict_returns_400_with_invalid_types(self, client, valid_customer_data):
         """Testa se predict retorna 400 com tipos inválidos."""
         invalid_data = valid_customer_data.copy()
         invalid_data["tenure_months"] = "invalid"  # Should be int
-        
+
         response = client.post("/api/v1/predict", json=invalid_data)
         assert response.status_code == 422
 
@@ -188,7 +189,7 @@ class TestPredictEndpoint:
         """Testa se predict valida tenure_months >= 0."""
         invalid_data = valid_customer_data.copy()
         invalid_data["tenure_months"] = -5
-        
+
         response = client.post("/api/v1/predict", json=invalid_data)
         assert response.status_code == 422
 
@@ -210,7 +211,7 @@ class TestDocumentation:
         """Testa se schema OpenAPI está disponível."""
         response = client.get("/openapi.json")
         assert response.status_code == 200
-        
+
         schema = response.json()
         assert "openapi" in schema
         assert "info" in schema

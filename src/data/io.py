@@ -1,7 +1,9 @@
-import pandas as pd
 import joblib
+import pandas as pd
+
 from config import DATA_FILE, MODELS_DIR
 from utils.app_logging import logger
+
 
 def carregar_dados() -> pd.DataFrame:
     logger.info(f"Carregando dados do arquivo: {DATA_FILE}")

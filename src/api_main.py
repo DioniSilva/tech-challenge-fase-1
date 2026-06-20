@@ -2,16 +2,24 @@
 Aplicação FastAPI principal - Ponto de entrada da API.
 Configura e inicia o servidor FastAPI com todos os roteadores.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+
 from contextlib import asynccontextmanager
-from utils.app_logging import configurar_logging, logger
-from core.config import settings
+import uuid
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+
 from api.v1.api import api_router
+from core.config import settings
+from utils.app_logging import (
+    clear_request_context,
+    configurar_logging,
+    logger,
+    set_request_context,
+)
 
-
-# Configurar logging
-configurar_logging()
+# Configurar logging da API com saída JSON estruturada
+configurar_logging(json_formatter=True, service_name="telco-churn-API")
 
 
 # Função chamada ao iniciar a aplicação
@@ -19,20 +27,20 @@ configurar_logging()
 async def lifespan(app: FastAPI):
     """
     Gerenciador de contexto para startup e shutdown da aplicação.
-    
+
     Startup:
     - Configura logging
     - Valida modelo disponível
-    
+
     Shutdown:
     - Cleanup se necessário
     """
     # Startup
     logger.info(f"Iniciando {settings.app_name} v{settings.app_version}")
     logger.info(f"Modo debug: {settings.debug}")
-    
+
     yield
-    
+
     # Shutdown
     logger.info(f"Encerrando {settings.app_name}")
 
@@ -56,6 +64,25 @@ app.add_middleware(
 )
 
 
+@app.middleware("http")
+async def request_logging_middleware(request: Request, call_next):
+    request_id = str(uuid.uuid4())
+    client_ip = request.client.host if request.client else ""
+    endpoint = request.url.path
+
+    tokens = set_request_context(
+        request_id=request_id,
+        client_ip=client_ip,
+        endpoint=endpoint,
+    )
+
+    try:
+        response = await call_next(request)
+        return response
+    finally:
+        clear_request_context(tokens)
+
+
 # Incluir roteadores
 app.include_router(
     api_router,
@@ -73,7 +100,7 @@ app.include_router(
 def read_root():
     """
     Endpoint raiz da API.
-    
+
     Returns:
         Informações sobre a API
     """
@@ -90,7 +117,7 @@ def read_root():
 
 if __name__ == "__main__":
     import uvicorn
-    
+
     uvicorn.run(
         app,
         host="0.0.0.0",

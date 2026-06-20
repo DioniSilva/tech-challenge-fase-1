@@ -72,3 +72,38 @@ def test_torch_mlp_classifier_direct_smoke():
     assert preds.shape == (12,)
     assert np.allclose(proba.sum(axis=1), np.ones(12), atol=1e-6)
     assert set(preds).issubset({0, 1})
+
+
+def test_torch_mlp_classifier_cross_validate():
+    X = pd.DataFrame(
+        {
+            "feature_a": np.random.rand(30),
+            "feature_b": np.random.rand(30),
+            "feature_c": np.random.rand(30),
+        }
+    )
+    y = np.array([0] * 15 + [1] * 15)
+
+    classifier = TorchMLPClassifier(
+        input_dim=3,
+        hidden_dims=(8, 4),
+        epochs=1,
+        patience=1,
+        batch_size=8,
+        random_state=123,
+        verbose=0,
+    )
+
+    cv_results = classifier.cross_validate(
+        X,
+        y,
+        cv=3,
+        scoring="accuracy",
+        return_train_score=False,
+        n_jobs=1,
+        refit=False,
+    )
+
+    assert "test_score" in cv_results
+    assert len(cv_results["test_score"]) == 3
+    assert not hasattr(classifier, "is_fitted_")

@@ -2,9 +2,11 @@
 Configurações globais da aplicação usando Pydantic Settings.
 Todas as variáveis de ambiente são lidas e validadas aqui.
 """
-from pydantic_settings import BaseSettings
-from pydantic import ConfigDict
+
 from pathlib import Path
+
+from pydantic import ConfigDict
+from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):

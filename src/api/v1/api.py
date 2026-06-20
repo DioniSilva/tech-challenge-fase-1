@@ -2,9 +2,10 @@
 Agregador de roteadores - API v1.
 Reúne todos os roteadores da versão 1 da API.
 """
-from fastapi import APIRouter
-from .endpoints.predict import router as predict_router
 
+from fastapi import APIRouter
+
+from .endpoints.predict import router as predict_router
 
 # Criar roteador raiz da v1
 api_router = APIRouter()

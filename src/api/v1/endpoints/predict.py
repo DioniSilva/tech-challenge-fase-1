@@ -2,12 +2,13 @@
 Endpoints da API v1 - Predict e Health endpoints.
 Responsáveis por receber e responder requisições HTTP.
 """
-from fastapi import APIRouter, Depends, HTTPException, status
-from schemas import CustomerInput, PredictionResponse, HealthResponse
-from services import get_predict_service, PredictService
-from core.config import settings
-from utils.app_logging import logger
 
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from core.config import settings
+from schemas import CustomerInput, HealthResponse, PredictionResponse
+from services import PredictService, get_predict_service
+from utils.app_logging import logger
 
 # Criar roteador da v1
 router = APIRouter(prefix="/v1", tags=["v1"])
@@ -25,19 +26,19 @@ def health_check(
 ) -> HealthResponse:
     """
     Endpoint de health check.
-    
+
     Verifica:
     - Se a aplicação está rodando
     - Se o modelo está carregado
-    
+
     Returns:
         HealthResponse: Status da aplicação
-        
+
     Raises:
         HTTPException: Se o serviço está indisponível
     """
     logger.info("Health check solicitado")
-    
+
     if predict_service.is_healthy():
         return HealthResponse(
             status="healthy",
@@ -65,21 +66,21 @@ def predict(
 ) -> PredictionResponse:
     """
     Endpoint de predição de churn.
-    
+
     Recebe dados de um cliente e retorna a predição de churn.
-    
+
     Args:
         customer: Dados do cliente (CustomerInput)
         predict_service: Serviço de predição (injetado)
-        
+
     Returns:
         PredictionResponse: Resultado da predição
-        
+
     Raises:
         HTTPException: Se houver erro na predição ou modelo não carregado
     """
     logger.info(f"Predição solicitada para cliente: {customer.customer_id}")
-    
+
     try:
         # Verificar se serviço está disponível
         if not predict_service.is_healthy():
@@ -88,13 +89,14 @@ def predict(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail="Model not loaded. Service unavailable.",
             )
-        
+
         # Executar predição
         prediction = predict_service.predict(customer)
-        
-        logger.info(f"Predição executada com sucesso para: {customer.customer_id}")
+
+        logger.info("Predição realizada com sucesso")
+
         return prediction
-        
+
     except ValueError as e:
         logger.error(f"Erro de validação: {str(e)}")
         raise HTTPException(
