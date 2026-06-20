@@ -30,6 +30,9 @@ dependencies = [
     "pandas",
     "pip",
     "pytest",
+    "pytest-sugar",
+    "pandera>=0.21.0",
+    "pydantic-settings>=2.0.0",
     "python-dotenv",
     "ruff",
     "scikit-learn",
@@ -56,6 +59,11 @@ extend-select = ["I"]  # Add import sorting
 known-first-party = ["ml_pipeline", "utils"]
 force-sort-within-sections = true
 
+[tool.pytest.ini_options]
+minversion = "7.0"
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "--ignore=src/ml_pipeline -q"
 
 [tool.flit.module]
 name = "ml_pipeline"
