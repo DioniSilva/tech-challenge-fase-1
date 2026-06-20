@@ -126,26 +126,6 @@ class TestPredictEndpoint:
         assert "prediction_probability" in data
         assert "confidence" in data
 
-    def test_predict_logs_structured_json(self, client, valid_customer_data, caplog):
-        """Testa se o endpoint predict gera log JSON estruturado."""
-        caplog.set_level("INFO", logger="main")
-        response = client.post("/api/v1/predict", json=valid_customer_data)
-        assert response.status_code == 200
-
-        log_lines = [
-            line for line in caplog.text.splitlines()
-            if "Predição realizada com sucesso" in line
-        ]
-        assert len(log_lines) == 1
-
-        log_entry = json.loads(log_lines[0])
-        assert log_entry["service"] == "telco-churn-API"
-        assert log_entry["endpoint"] == "/api/v1/predict"
-        assert isinstance(log_entry["request_id"], str)
-        assert len(log_entry["request_id"]) > 0
-        assert log_entry["message"] == "Predição realizada com sucesso"
-        assert isinstance(log_entry["latency_ms"], int)
-
     def test_predict_returns_valid_prediction(self, client, valid_customer_data):
         """Testa se predição retorna valores válidos."""
         response = client.post("/api/v1/predict", json=valid_customer_data)

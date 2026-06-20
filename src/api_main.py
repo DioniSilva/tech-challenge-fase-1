@@ -2,16 +2,21 @@
 Aplicação FastAPI principal - Ponto de entrada da API.
 Configura e inicia o servidor FastAPI com todos os roteadores.
 """
-import uuid
+
 from contextlib import asynccontextmanager
+import uuid
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.v1.api import api_router
 from core.config import settings
-from utils.app_logging import (clear_request_context, configurar_logging,
-                               logger, set_request_context)
+from utils.app_logging import (
+    clear_request_context,
+    configurar_logging,
+    logger,
+    set_request_context,
+)
 
 # Configurar logging da API com saída JSON estruturada
 configurar_logging(json_formatter=True, service_name="telco-churn-API")

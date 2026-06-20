@@ -1,6 +1,7 @@
-import os
 from pathlib import Path
+
 import numpy as np
+
 from utils.app_logging import DEBUG
 
 RANDOM_STATE = 17
@@ -17,13 +18,14 @@ DATA_FILE = DATA_DIR / "raw" / "Telco_customer_churn.xlsx"
 MODELS_DIR = PROJECT_ROOT / "models"
 MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
-TARGET = 'Churn Value'
+TARGET = "Churn Value"
 
 
 def set_seeds(seed: int = RANDOM_STATE):
     np.random.seed(seed)
     try:
         import torch
+
         torch.manual_seed(seed)
     except Exception:
         pass

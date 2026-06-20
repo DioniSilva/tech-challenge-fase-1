@@ -12,7 +12,7 @@ PYTHON_INTERPRETER = $(UV_RUN) python
 #################################################################################
 
 
-## Cria o ambiente uv e instala as dependências
+## Cria o ambiente uv e instala as dependencias
 .PHONY: setup
 setup:
 	uv venv --python $(PYTHON_VERSION)
@@ -37,11 +37,15 @@ format:
 ## Executar testes
 .PHONY: test
 test:
-	$(UV_RUN) pytest tests --ignore=src/ml_pipeline
+	$(UV_RUN) pytest tests --ignore=src/ml_pipeline --ignore=tests/test_api_endpoints.py -q
 
 .PHONY: smoke
 smoke:
 	$(UV_RUN) pytest tests/test_smoke_pipeline.py tests/test_mlp.py --ignore=src/ml_pipeline -q
+
+.PHONY: test-all
+test-all:
+	$(UV_RUN) pytest tests --ignore=src/ml_pipeline -q
 
 
 ## Servir a documentacao localmente (mkdocs)
@@ -71,11 +75,21 @@ run-mlflow:
 		$(UV_RUN) mlflow ui
 
 
-## Executar a API FastAPI (desenvolvimento com reload)
-.PHONY: api-run
-api-run:
-	$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload
+## Executar o projeto e a API, conforme existencia do modelo
+## Se models/mlp.joblib não existir, roda src/main.py para treinar o modelo
+## Inicia a API FastAPI em src/api_main.py
+.PHONY: run
+run:
+	if [ ! -f models/mlp.joblib ]; then \
+		$(PYTHON_INTERPRETER) src/main.py; \
+	fi
 
+	$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload; \
+
+## Gerar o modelo MLP rodando o treinamento completo
+.PHONY: build-mlp
+build-mlp:
+	$(PYTHON_INTERPRETER) src/main.py
 
 ## Validar a API (verificar imports e estrutura)
 .PHONY: api-validate

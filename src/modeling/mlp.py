@@ -1,12 +1,15 @@
-from utils.app_logging import logger
+from typing import Optional, Tuple
+
 import numpy as np
+from sklearn.base import BaseEstimator, ClassifierMixin, clone
+from sklearn.model_selection import StratifiedKFold, cross_validate
+from sklearn.utils.validation import check_is_fitted
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
-from sklearn.base import BaseEstimator, ClassifierMixin
-from sklearn.utils.validation import check_is_fitted
-from typing import Optional, Tuple
+
+from utils.app_logging import logger
 
 
 class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
@@ -30,7 +33,7 @@ class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
         random_state: Optional[int] = None,
         device: Optional[str] = None,
         verbose: int = 0,
-        threshold: float = 0.5
+        threshold: float = 0.5,
     ):
         self.input_dim = input_dim
         self.hidden_dims = tuple(hidden_dims)
@@ -74,10 +77,14 @@ class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
 
         val_size = max(1, int(0.2 * n_samples))
         train_size = n_samples - val_size
-        logger.debug(f"Split de treinamento/validação: train_size={train_size}, val_size={val_size}.")
+        logger.debug(
+            f"Split de treinamento/validação: train_size={train_size}, val_size={val_size}."
+        )
         train_set, val_set = torch.utils.data.random_split(dataset, [train_size, val_size])
 
-        train_loader = DataLoader(train_set, batch_size=self.batch_size, shuffle=True, num_workers=0)
+        train_loader = DataLoader(
+            train_set, batch_size=self.batch_size, shuffle=True, num_workers=0
+        )
         val_loader = DataLoader(val_set, batch_size=self.batch_size, shuffle=False, num_workers=0)
 
         return train_loader, val_loader
@@ -114,7 +121,9 @@ class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
         self.model_ = self._build_model(self.input_dim)
         self.model_.to(device)
         criterion = nn.BCEWithLogitsLoss()
-        optimizer = optim.Adam(self.model_.parameters(), lr=self.lr, weight_decay=self.weight_decay)
+        optimizer = optim.Adam(
+            self.model_.parameters(), lr=self.lr, weight_decay=self.weight_decay
+        )
         return criterion, optimizer
 
     def _step_epoch(self, loader, device, criterion, optimizer=None):
@@ -179,18 +188,20 @@ class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
 
         logger.info("Iniciando treinamento do TorchMLPClassifier.")
         for epoch in range(self.epochs):
-            logger.debug(f"Iniciando epoch {epoch+1}/{self.epochs}.")
+            logger.debug(f"Iniciando epoch {epoch + 1}/{self.epochs}.")
             avg_train_loss = self._step_epoch(train_loader, device, criterion, optimizer=optimizer)
             avg_val_loss = self._step_epoch(val_loader, device, criterion, optimizer=None)
 
             if self.verbose:
-                logger.info(f"Epoch {epoch+1}/{self.epochs} | train_loss={avg_train_loss:.4f} | val_loss={avg_val_loss:.4f}")
+                logger.info(
+                    f"Epoch {epoch + 1}/{self.epochs} | train_loss={avg_train_loss:.4f} | val_loss={avg_val_loss:.4f}"
+                )
 
             best_loss, patience_counter, best_state, stop_training = self._update_early_stopping(
                 avg_val_loss, best_loss, patience_counter, best_state
             )
             if stop_training:
-                logger.info(f"Early stopping ativado na epoch {epoch+1}.")
+                logger.info(f"Early stopping ativado na epoch {epoch + 1}.")
                 break
 
         if best_state is not None:
@@ -203,6 +214,43 @@ class TorchMLPClassifier(BaseEstimator, ClassifierMixin):
         logger.info(f"Treinamento concluído. Modelo ajustado com {len(self.classes_)} classes.")
 
         return self
+
+    def cross_validate(
+        self,
+        X,
+        y,
+        cv: int = 5,
+        scoring="accuracy",
+        return_train_score: bool = False,
+        n_jobs: int = 1,
+        refit: bool = False,
+    ) -> dict:
+        """Executa validação cruzada usando o mesmo classificador sklearn-compatible.
+
+        O método utiliza `StratifiedKFold` para preservar a proporção das classes em cada fold.
+        Se `refit=True`, o estimador atual é treinado novamente com todo o conjunto após a validação.
+        """
+        cv_splitter = StratifiedKFold(
+            n_splits=cv,
+            shuffle=True,
+            random_state=self.random_state,
+        )
+
+        result = cross_validate(
+            clone(self),
+            X,
+            y,
+            scoring=scoring,
+            cv=cv_splitter,
+            return_train_score=return_train_score,
+            n_jobs=n_jobs,
+            error_score=np.nan,
+        )
+
+        if refit:
+            self.fit(X, y)
+
+        return result
 
     def predict_proba(self, X):
         check_is_fitted(self, "is_fitted_")
