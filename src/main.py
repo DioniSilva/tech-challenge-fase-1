@@ -1,12 +1,13 @@
-from sklearn.model_selection import train_test_split
-from modeling.pipeline import build_pipeline
-from utils.app_logging import configurar_logging, logger
-from config import LOGGING_LEVEL, set_seeds, TARGET, TEST_SIZE, RANDOM_STATE
 import pandas as pd
+from sklearn.metrics import auc, classification_report, precision_recall_curve, roc_auc_score
+from sklearn.model_selection import train_test_split
+
+from config import LOGGING_LEVEL, RANDOM_STATE, TARGET, TEST_SIZE, set_seeds
 from data.io import carregar_dados, save_pipeline
 from modeling.mlp import TorchMLPClassifier
-from sklearn.metrics import classification_report, roc_auc_score
-from sklearn.metrics import precision_recall_curve, auc
+from modeling.pipeline import build_pipeline
+from utils.app_logging import configurar_logging, logger
+
 
 def main():
     configurar_logging(nivel=LOGGING_LEVEL)
@@ -25,10 +26,15 @@ def train(df: pd.DataFrame):
     y = df[TARGET]
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE   # determinístico
+        X,
+        y,
+        test_size=TEST_SIZE,
+        random_state=RANDOM_STATE,  # determinístico
     )
 
-    pipeline = build_pipeline(TorchMLPClassifier(threshold=0.45, random_state=RANDOM_STATE, verbose=1))
+    pipeline = build_pipeline(
+        TorchMLPClassifier(threshold=0.45, random_state=RANDOM_STATE, verbose=1)
+    )
     pipeline.fit(X_train, y_train)
 
     print_metrics(pipeline, X_test, y_test)
