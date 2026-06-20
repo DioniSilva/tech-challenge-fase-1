@@ -20,9 +20,7 @@ class RequestContextFilter(_std_logging.Filter):
         record.endpoint = endpoint_var.get() or ""
         start_time = start_time_var.get()
         record.latency_ms = (
-            round((time.monotonic() - start_time) * 1000)
-            if start_time is not None
-            else None
+            round((time.monotonic() - start_time) * 1000) if start_time is not None else None
         )
         return True
 
@@ -65,7 +63,9 @@ def clear_request_context(tokens):
     start_time_var.reset(tokens[3])
 
 
-def configurar_logging(nivel=_std_logging.INFO, json_formatter: bool = False, service_name: str = "main"):
+def configurar_logging(
+    nivel=_std_logging.INFO, json_formatter: bool = False, service_name: str = "main"
+):
     """
     Configura o logger global. Pode ser chamado múltiplas vezes
     para resetar as configurações durante a sessão.
@@ -83,7 +83,7 @@ def configurar_logging(nivel=_std_logging.INFO, json_formatter: bool = False, se
         stream_handler.setFormatter(formatter)
         stream_handler.addFilter(RequestContextFilter())
     else:
-        formatter = _std_logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = _std_logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
         stream_handler = _std_logging.StreamHandler()
         stream_handler.setFormatter(formatter)
 

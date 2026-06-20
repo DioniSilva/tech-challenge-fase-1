@@ -2,6 +2,7 @@
 Endpoints da API v1 - Predict e Health endpoints.
 Responsáveis por receber e responder requisições HTTP.
 """
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from core.config import settings

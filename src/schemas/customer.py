@@ -2,8 +2,10 @@
 Schemas (DTOs) para validação de dados de entrada/saída.
 Utiliza Pydantic para validação automática.
 """
-from pydantic import BaseModel, Field, ConfigDict
+
 from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class CustomerInput(BaseModel):
@@ -15,7 +17,7 @@ class CustomerInput(BaseModel):
     # Identificação
     customer_id: str = Field(..., description="ID do cliente")
     count: int = Field(1, description="Contagem (padrão: 1)")
-    
+
     # Localização
     country: str = Field(..., description="País do cliente")
     state: str = Field(..., description="Estado/Região")
@@ -23,65 +25,40 @@ class CustomerInput(BaseModel):
     zip_code: int = Field(..., description="CEP")
     latitude: float = Field(..., description="Latitude da localização")
     longitude: float = Field(..., description="Longitude da localização")
-    
+
     # Dados Pessoais
     gender: str = Field(..., description="Gênero (Male/Female)")
     senior_citizen: str = Field(..., description="Senior Citizen (Yes/No)")
     partner: str = Field(..., description="Possui parceiro (Yes/No)")
     dependents: str = Field(..., description="Possui dependentes (Yes/No)")
-    
+
     # Tenure
     tenure_months: int = Field(..., ge=0, description="Meses de permanência")
-    
+
     # Serviços Telefônicos
     phone_service: str = Field(..., description="Serviço de telefone (Yes/No)")
     multiple_lines: str = Field(..., description="Múltiplas linhas (Yes/No/No phone service)")
-    
+
     # Serviços de Internet
-    internet_service: str = Field(
-        ..., 
-        description="Tipo de Internet (DSL/Fiber optic/No)"
-    )
-    online_security: str = Field(
-        ..., 
-        description="Online Security (Yes/No/No internet service)"
-    )
-    online_backup: str = Field(
-        ..., 
-        description="Online Backup (Yes/No/No internet service)"
-    )
+    internet_service: str = Field(..., description="Tipo de Internet (DSL/Fiber optic/No)")
+    online_security: str = Field(..., description="Online Security (Yes/No/No internet service)")
+    online_backup: str = Field(..., description="Online Backup (Yes/No/No internet service)")
     device_protection: str = Field(
-        ..., 
-        description="Device Protection (Yes/No/No internet service)"
+        ..., description="Device Protection (Yes/No/No internet service)"
     )
-    tech_support: str = Field(
-        ..., 
-        description="Tech Support (Yes/No/No internet service)"
-    )
-    streaming_tv: str = Field(
-        ..., 
-        description="Streaming TV (Yes/No/No internet service)"
-    )
-    streaming_movies: str = Field(
-        ..., 
-        description="Streaming Movies (Yes/No/No internet service)"
-    )
-    
+    tech_support: str = Field(..., description="Tech Support (Yes/No/No internet service)")
+    streaming_tv: str = Field(..., description="Streaming TV (Yes/No/No internet service)")
+    streaming_movies: str = Field(..., description="Streaming Movies (Yes/No/No internet service)")
+
     # Contrato
-    contract: str = Field(
-        ..., 
-        description="Tipo de contrato (Month-to-month/One year/Two year)"
-    )
+    contract: str = Field(..., description="Tipo de contrato (Month-to-month/One year/Two year)")
     paperless_billing: str = Field(..., description="Fatura sem papel (Yes/No)")
-    payment_method: str = Field(
-        ..., 
-        description="Método de pagamento"
-    )
-    
+    payment_method: str = Field(..., description="Método de pagamento")
+
     # Charges
     monthly_charges: float = Field(..., ge=0, description="Cobrança mensal em $")
     total_charges: str = Field(..., description="Cobrança total em $")
-    
+
     # Churn Info (Usado para treinamento, mas opcional em predição)
     churn_label: Optional[str] = Field(None, description="Label de Churn (Yes/No)")
     churn_value: Optional[int] = Field(None, description="Valor de Churn (0/1)")
@@ -138,17 +115,9 @@ class PredictionResponse(BaseModel):
     prediction: int = Field(..., description="Predição (0=Não churn, 1=Churn)")
     prediction_label: str = Field(..., description="Label da predição (Yes/No)")
     prediction_probability: float = Field(
-        ..., 
-        ge=0.0, 
-        le=1.0, 
-        description="Probabilidade de churn"
+        ..., ge=0.0, le=1.0, description="Probabilidade de churn"
     )
-    confidence: float = Field(
-        ..., 
-        ge=0.0, 
-        le=1.0, 
-        description="Confiança da predição (max prob)"
-    )
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Confiança da predição (max prob)")
 
     model_config = ConfigDict(
         json_schema_extra={
