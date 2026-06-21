@@ -35,8 +35,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DEBUG="false" \
     LOG_LEVEL="INFO" \
     API_PREFIX="/api" \
-    API_V1_PREFIX="/api/v1" \
-    MODEL_NAME="baseline_model.joblib"
+    API_V1_PREFIX="/api/v1"
 
 WORKDIR /app
 

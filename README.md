@@ -50,7 +50,7 @@ docker build -t tech-challenge-fase-1:local .
 docker run --rm -p 8000:8000 tech-challenge-fase-1:local
 ```
 
-A imagem embarca o codigo da API e o artefato `models/baseline_model.joblib`.
+A imagem embarca o codigo da API e o artefato `models/mlp.joblib`.
 Por padrao, o container sobe a API FastAPI em `http://localhost:8000`.
 
 ## Kustomize
