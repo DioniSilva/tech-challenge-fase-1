@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: tech-challenge
 
 resources:
+  - namespace.yaml
   - ../../base
 
 images:
