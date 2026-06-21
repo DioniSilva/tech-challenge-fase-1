@@ -1,82 +1,68 @@
-"""
-Schemas (DTOs) para validação de dados de entrada/saída.
-Utiliza Pydantic para validação automática.
-"""
+"""Schemas públicos da API de inferência de churn."""
 
-from typing import Optional
+from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+YesNo = Literal["Yes", "No"]
+InternetAddOn = Literal["Yes", "No", "No internet service"]
 
 
 class CustomerInput(BaseModel):
+    """Contrato de inferência alinhado às features do modelo MLP.
+
+    ``customer_id`` é usado somente para rastreabilidade. Os demais campos são
+    exatamente as 20 features aceitas pelo pré-processador do modelo.
     """
-    Schema para entrada de dados de um cliente.
-    Representa as features do dataset IBM Telco.
-    """
 
-    # Identificação
-    customer_id: str = Field(..., description="ID do cliente")
-    count: int = Field(1, description="Contagem (padrão: 1)")
+    customer_id: str = Field(..., min_length=1, description="ID não vazio do cliente")
 
-    # Localização
-    country: str = Field(..., description="País do cliente")
-    state: str = Field(..., description="Estado/Região")
-    city: str = Field(..., description="Cidade")
-    zip_code: int = Field(..., description="CEP")
-    latitude: float = Field(..., description="Latitude da localização")
-    longitude: float = Field(..., description="Longitude da localização")
-
-    # Dados Pessoais
-    gender: str = Field(..., description="Gênero (Male/Female)")
-    senior_citizen: str = Field(..., description="Senior Citizen (Yes/No)")
-    partner: str = Field(..., description="Possui parceiro (Yes/No)")
-    dependents: str = Field(..., description="Possui dependentes (Yes/No)")
-
-    # Tenure
+    zip_code: int = Field(..., ge=0, le=99999, description="CEP dos Estados Unidos")
+    gender: Literal["Female", "Male"] = Field(..., description="Gênero do cliente")
+    senior_citizen: YesNo = Field(..., description="Cliente idoso")
+    partner: YesNo = Field(..., description="Possui parceiro")
+    dependents: YesNo = Field(..., description="Possui dependentes")
     tenure_months: int = Field(..., ge=0, description="Meses de permanência")
 
-    # Serviços Telefônicos
-    phone_service: str = Field(..., description="Serviço de telefone (Yes/No)")
-    multiple_lines: str = Field(..., description="Múltiplas linhas (Yes/No/No phone service)")
-
-    # Serviços de Internet
-    internet_service: str = Field(..., description="Tipo de Internet (DSL/Fiber optic/No)")
-    online_security: str = Field(..., description="Online Security (Yes/No/No internet service)")
-    online_backup: str = Field(..., description="Online Backup (Yes/No/No internet service)")
-    device_protection: str = Field(
-        ..., description="Device Protection (Yes/No/No internet service)"
+    phone_service: YesNo = Field(..., description="Possui serviço de telefone")
+    multiple_lines: Literal["Yes", "No", "No phone service"] = Field(
+        ..., description="Possui múltiplas linhas"
     )
-    tech_support: str = Field(..., description="Tech Support (Yes/No/No internet service)")
-    streaming_tv: str = Field(..., description="Streaming TV (Yes/No/No internet service)")
-    streaming_movies: str = Field(..., description="Streaming Movies (Yes/No/No internet service)")
+    internet_service: Literal["DSL", "Fiber optic", "No"] = Field(
+        ..., description="Tipo de serviço de internet"
+    )
+    online_security: InternetAddOn = Field(..., description="Serviço de segurança online")
+    online_backup: InternetAddOn = Field(..., description="Serviço de backup online")
+    device_protection: InternetAddOn = Field(..., description="Proteção do dispositivo")
+    tech_support: InternetAddOn = Field(..., description="Suporte técnico")
+    streaming_tv: InternetAddOn = Field(..., description="Streaming de TV")
+    streaming_movies: InternetAddOn = Field(..., description="Streaming de filmes")
 
-    # Contrato
-    contract: str = Field(..., description="Tipo de contrato (Month-to-month/One year/Two year)")
-    paperless_billing: str = Field(..., description="Fatura sem papel (Yes/No)")
-    payment_method: str = Field(..., description="Método de pagamento")
-
-    # Charges
-    monthly_charges: float = Field(..., ge=0, description="Cobrança mensal em $")
-    total_charges: str = Field(..., description="Cobrança total em $")
-
-    # Churn Info (Usado para treinamento, mas opcional em predição)
-    churn_label: Optional[str] = Field(None, description="Label de Churn (Yes/No)")
-    churn_value: Optional[int] = Field(None, description="Valor de Churn (0/1)")
-    churn_score: Optional[int] = Field(None, description="Score de Churn")
-    cltv: Optional[int] = Field(None, description="Customer Lifetime Value")
-    churn_reason: Optional[str] = Field(None, description="Motivo do Churn")
+    contract: Literal["Month-to-month", "One year", "Two year"] = Field(
+        ..., description="Tipo de contrato"
+    )
+    paperless_billing: YesNo = Field(..., description="Fatura sem papel")
+    payment_method: Literal[
+        "Electronic check",
+        "Mailed check",
+        "Bank transfer (automatic)",
+        "Credit card (automatic)",
+    ] = Field(..., description="Método de pagamento")
+    monthly_charges: float = Field(
+        ..., ge=0, allow_inf_nan=False, description="Cobrança mensal em dólares"
+    )
+    total_charges: float = Field(
+        ..., ge=0, allow_inf_nan=False, description="Cobrança total em dólares"
+    )
 
     model_config = ConfigDict(
+        strict=True,
+        extra="forbid",
+        str_strip_whitespace=True,
         json_schema_extra={
             "example": {
                 "customer_id": "5575-GNVDE",
-                "count": 1,
-                "country": "United States",
-                "state": "California",
-                "city": "Los Angeles",
                 "zip_code": 90001,
-                "latitude": 34.09,
-                "longitude": -118.26,
                 "gender": "Male",
                 "senior_citizen": "Yes",
                 "partner": "Yes",
@@ -95,28 +81,52 @@ class CustomerInput(BaseModel):
                 "paperless_billing": "No",
                 "payment_method": "Credit card (automatic)",
                 "monthly_charges": 105.25,
-                "total_charges": "5046.00",
-                "churn_label": "No",
-                "churn_value": 0,
-                "churn_score": 20,
-                "cltv": 5046,
-                "churn_reason": None,
+                "total_charges": 5046.0,
             }
-        }
+        },
     )
+
+    @model_validator(mode="after")
+    def validate_service_dependencies(self) -> "CustomerInput":
+        """Reject combinations that do not represent a possible subscription."""
+        if self.phone_service == "No" and self.multiple_lines != "No phone service":
+            raise ValueError(
+                "multiple_lines must be 'No phone service' when phone_service is 'No'"
+            )
+        if self.phone_service == "Yes" and self.multiple_lines == "No phone service":
+            raise ValueError(
+                "multiple_lines cannot be 'No phone service' when phone_service is 'Yes'"
+            )
+
+        add_on_fields = (
+            "online_security",
+            "online_backup",
+            "device_protection",
+            "tech_support",
+            "streaming_tv",
+            "streaming_movies",
+        )
+        add_on_values = [getattr(self, field) for field in add_on_fields]
+        if self.internet_service == "No":
+            if any(value != "No internet service" for value in add_on_values):
+                raise ValueError(
+                    "internet add-ons must be 'No internet service' when internet_service is 'No'"
+                )
+        elif any(value == "No internet service" for value in add_on_values):
+            raise ValueError(
+                "internet add-ons cannot be 'No internet service' when internet_service is enabled"
+            )
+
+        return self
 
 
 class PredictionResponse(BaseModel):
-    """
-    Schema para resposta de predição.
-    """
+    """Schema para resposta de predição."""
 
     customer_id: str = Field(..., description="ID do cliente")
     prediction: int = Field(..., description="Predição (0=Não churn, 1=Churn)")
     prediction_label: str = Field(..., description="Label da predição (Yes/No)")
-    prediction_probability: float = Field(
-        ..., ge=0.0, le=1.0, description="Probabilidade de churn"
-    )
+    churn_probability: float = Field(..., ge=0.0, le=1.0, description="Probabilidade de churn")
     confidence: float = Field(..., ge=0.0, le=1.0, description="Confiança da predição (max prob)")
 
     model_config = ConfigDict(
@@ -125,7 +135,7 @@ class PredictionResponse(BaseModel):
                 "customer_id": "5575-GNVDE",
                 "prediction": 0,
                 "prediction_label": "No",
-                "prediction_probability": 0.25,
+                "churn_probability": 0.25,
                 "confidence": 0.75,
             }
         }
