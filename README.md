@@ -23,6 +23,15 @@ make format
 make test
 ```
 
+### Hooks de pre-commit
+
+```bash
+make pre-commit-install
+make pre-commit-run
+```
+
+Os hooks executam validacoes basicas de arquivos e o `ruff` antes de cada commit.
+
 ### Documentacao
 
 ```bash
