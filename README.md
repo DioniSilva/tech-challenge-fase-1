@@ -36,6 +36,39 @@ make docs-build
 make run-mlflow
 ```
 
+## Docker
+
+### Build da imagem
+
+```bash
+docker build -t tech-challenge-fase-1:local .
+```
+
+### Execucao local
+
+```bash
+docker run --rm -p 8000:8000 tech-challenge-fase-1:local
+```
+
+A imagem embarca o codigo da API e o artefato `models/baseline_model.joblib`.
+Por padrao, o container sobe a API FastAPI em `http://localhost:8000`.
+
+## Kustomize
+
+Os manifests Kubernetes ficam em `k8s/`.
+
+### Renderizar manifests
+
+```bash
+kubectl kustomize k8s/overlays/local
+```
+
+### Aplicar no cluster
+
+```bash
+kubectl apply -k k8s/overlays/local
+```
+
 ## Estrutura do Projeto
 
 ```

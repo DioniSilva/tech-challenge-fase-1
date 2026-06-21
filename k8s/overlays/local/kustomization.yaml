@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: tech-challenge
+
+resources:
+  - ../../base
+
+images:
+  - name: tech-challenge-fase-1
+    newName: tech-challenge-fase-1
+    newTag: local
+
+replicas:
+  - name: tech-challenge-api
+    count: 1
+
+commonLabels:
+  environment: local
