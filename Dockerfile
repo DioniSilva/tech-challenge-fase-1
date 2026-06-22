@@ -6,23 +6,18 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y --no-install-recommends make \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY LICENSE README.md pyproject.toml ./
+RUN pip install --upgrade pip uv
+
+COPY LICENSE README.md pyproject.toml Makefile ./
 COPY src ./src
 
-RUN pip install --upgrade pip && pip install \
-    fastapi \
-    uvicorn \
-    pydantic-settings \
-    python-dotenv \
-    numpy \
-    pandas \
-    scikit-learn \
-    joblib \
-    imbalanced-learn \
-    openpyxl
+RUN make install-runtime DOCKER_PYTHON=/opt/venv/bin/python
 
 
 FROM python:3.12-slim AS runtime
@@ -42,6 +37,8 @@ WORKDIR /app
 COPY --from=builder /opt/venv /opt/venv
 COPY src ./src
 COPY models ./models
+
+RUN test -f models/mlp.joblib || (echo "models/mlp.joblib ausente. Rode 'make train' antes do docker build." >&2 && exit 1)
 
 EXPOSE 8000
 
