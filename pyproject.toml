@@ -22,15 +22,9 @@ dependencies = [
     "pandas",
     "pydantic-settings>=2.0.0",
     "python-dotenv",
-    "requests>=2.32.0",
-    "ruff",
     "scikit-learn",
-    "seaborn>=0.13.2",
-    "streamlit>=1.45.0",
-    "tabulate>=0.10.0",
     "uvicorn>=0.46.0",
     "imbalanced-learn>=0.11.0",
-    "torch>=2.12.0",
 ]
 requires-python = "~=3.12.0"
 
@@ -40,11 +34,17 @@ train = [
   "huggingface-hub>=1.16.1",
   "mlflow>=3.12.0",
   "openpyxl>=3.1.5",
+  "torch>=2.12.0",
 ]
 docs = [
   "great-tables[img]>=0.9.0",
   "jinja2>=3.1.6",
   "mkdocs",
+]
+ui = [
+  "requests>=2.32.0",
+  "streamlit>=1.45.0",
+  "tabulate>=0.10.0",
 ]
 notebook = [
   "ipython",

@@ -20,7 +20,7 @@ setup:
 	@echo ">>> New uv virtual environment created. Activate with:"
 	@echo ">>> Windows: .\\.venv\\Scripts\\activate"
 	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
-	uv sync --extra train --extra docs --extra notebook --extra dev
+	uv sync --extra train --extra docs --extra notebook --extra dev --extra ui
 
 
 ## Cria ambiente enxuto para servir a API localmente
