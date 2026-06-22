@@ -22,6 +22,27 @@ Se voce quiser apenas subir a API localmente sem o stack de treino/notebook:
 
 ```bash
 make setup-runtime
+### API e interface de inferência
+
+Para iniciar apenas a API FastAPI:
+
+```bash
+make serve
+```
+
+Para iniciar a API e a interface Streamlit juntas, acesse a UI em
+`http://localhost:8501`:
+
+```bash
+make serve WITH_UI=true
+```
+
+Por padrão, a UI consulta a API em `http://localhost:8000`. `API_BASE_URL`
+controla essa conexão e também o link para o Swagger. `MKDOCS_URL` define o
+link para a documentação do projeto:
+
+```bash
+API_BASE_URL=http://api:8000 MKDOCS_URL=https://docs.exemplo.com make serve WITH_UI=true
 ```
 
 ### Qualidade e testes

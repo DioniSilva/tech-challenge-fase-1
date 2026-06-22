@@ -58,7 +58,10 @@ def health_check(
     response_model=PredictionResponse,
     status_code=status.HTTP_200_OK,
     summary="Predict Churn",
-    description="Executa predição de churn para um cliente",
+    description=(
+        "Executa a predição de churn com as 20 features aceitas pelo modelo. "
+        "Campos extras, tipos incompatíveis e combinações de serviços incoerentes são rejeitados."
+    ),
 )
 def predict(
     customer: CustomerInput,

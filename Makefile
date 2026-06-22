@@ -112,11 +112,21 @@ run-mlflow:
 ## Inicia a API FastAPI em src/api_main.py
 .PHONY: serve
 serve:
-	if [ ! -f models/mlp.joblib ]; then \
+	@if [ -n "$(WITH_UI)" ] && [ "$(WITH_UI)" != "true" ]; then \
+		echo "Uso: make serve [WITH_UI=true]"; \
+		exit 2; \
+	fi
+	@if [ ! -f models/mlp.joblib ]; then \
 		$(PYTHON_INTERPRETER) src/main.py; \
 	fi
-
-	$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload; \
+	@if [ "$(WITH_UI)" = "true" ]; then \
+		$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload & api_pid=$$!; \
+		cleanup() { kill $$api_pid 2>/dev/null || true; wait $$api_pid 2>/dev/null || true; }; \
+		trap cleanup EXIT INT TERM; \
+		PYTHONPATH=src $(UV_RUN) streamlit run src/ui/app.py; \
+	else \
+		$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload; \
+	fi
 
 ## Gerar o modelo MLP rodando o treinamento completo
 .PHONY: train
