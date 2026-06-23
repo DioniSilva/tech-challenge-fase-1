@@ -94,6 +94,8 @@ docker run --rm -p 8000:8000 tech-challenge-fase-1:local
 ```
 
 A imagem embarca o codigo da API e o artefato `models/mlp.joblib`.
+Como esse artefato serializa `TorchMLPClassifier`, o runtime da imagem tambem
+precisa incluir `torch` para que `joblib.load()` funcione nos endpoints da API.
 Se o arquivo nao existir, o build falha cedo com a instrucao para executar `make train` antes.
 CI e registry de modelos continuam como evolucoes futuras; ainda nao sao a origem adotada neste projeto.
 Por padrao, o container sobe a API FastAPI em `http://localhost:8000`.

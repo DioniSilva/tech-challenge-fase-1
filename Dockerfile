@@ -17,7 +17,7 @@ RUN pip install --upgrade pip uv
 COPY LICENSE README.md pyproject.toml Makefile ./
 COPY src ./src
 
-RUN make install-runtime DOCKER_PYTHON=/opt/venv/bin/python
+RUN UV_TORCH_BACKEND=cpu make install-runtime DOCKER_PYTHON=/opt/venv/bin/python
 
 
 FROM python:3.12-slim AS runtime
