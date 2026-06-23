@@ -1,6 +1,7 @@
 # Data
 # Por padrao, mantemos `data/` fora do git. Excecao: tracking leve do MLflow.
 /data/*
+/models/mlp.joblib
 # !/data/mlflow_tracking/
 # !/data/mlflow_tracking/**
 
@@ -206,3 +207,5 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+models/
