@@ -108,7 +108,7 @@ run-mlflow:
 
 
 ## Executar o projeto e a API, conforme existencia do modelo
-## Se models/mlp.joblib não existir, roda src/main.py para treinar o modelo
+## Se models/mlp.joblib não existir, roda src/train_mlp.py para treinar o modelo
 ## Inicia a API FastAPI em src/api_main.py
 .PHONY: serve
 serve:
@@ -117,7 +117,7 @@ serve:
 		exit 2; \
 	fi
 	@if [ ! -f models/mlp.joblib ]; then \
-		$(PYTHON_INTERPRETER) src/main.py; \
+		$(PYTHON_INTERPRETER) src/train_mlp.py; \
 	fi
 	@if [ "$(WITH_UI)" = "true" ]; then \
 		$(UV_RUN) uvicorn src.api_main:app --host 0.0.0.0 --port 8000 --reload & api_pid=$$!; \
@@ -131,7 +131,7 @@ serve:
 ## Gerar o modelo MLP rodando o treinamento completo
 .PHONY: train
 train:
-	$(PYTHON_INTERPRETER) src/main.py
+	$(PYTHON_INTERPRETER) src/train_mlp.py
 
 ## Validar a API (verificar imports e estrutura)
 .PHONY: api-validate
