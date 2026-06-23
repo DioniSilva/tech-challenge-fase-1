@@ -4,15 +4,39 @@ Responsável pela lógica de predição e processamento do modelo.
 """
 
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 import joblib
 import numpy as np
 import pandas as pd
+from sklearn.pipeline import Pipeline
 
 from core.config import settings
 from schemas.customer import CustomerInput, PredictionResponse
 from utils.app_logging import logger
+
+MODEL_FEATURE_COLUMNS = (
+    "zip_code",
+    "gender",
+    "senior_citizen",
+    "partner",
+    "dependents",
+    "tenure_months",
+    "phone_service",
+    "multiple_lines",
+    "internet_service",
+    "online_security",
+    "online_backup",
+    "device_protection",
+    "tech_support",
+    "streaming_tv",
+    "streaming_movies",
+    "contract",
+    "paperless_billing",
+    "payment_method",
+    "monthly_charges",
+    "total_charges",
+)
 
 
 class PredictService:
@@ -21,7 +45,7 @@ class PredictService:
     Carrega o pipeline do modelo uma única vez na inicialização.
     """
 
-    def __init__(self, model_path: Path = None):
+    def __init__(self, model_path: Optional[Path | str] = None):
         """
         Inicializa o serviço carregando o pipeline treinado.
 
@@ -30,22 +54,22 @@ class PredictService:
                        Se None, usa o caminho padrão das configurações.
         """
         if model_path is None:
-            model_path = settings.models_dir / settings.model_name
+            self.model_path = settings.model_path
+        else:
+            self.model_path = Path(model_path)
 
-        logger.info(f"Inicializando PredictService com modelo: {model_path}")
+        if not self.model_path.exists():
+            logger.error(f"Modelo não encontrado em: {self.model_path}")
+            raise FileNotFoundError(f"Arquivo do modelo não existe: {self.model_path}")
+
+        logger.info(f"Inicializando PredictService com modelo: {self.model_path}")
 
         try:
-            self.pipeline = joblib.load(model_path)
-            self.model_loaded = True
+            self.pipeline: Pipeline = joblib.load(self.model_path)
             logger.info("Pipeline carregado com sucesso")
-        except FileNotFoundError:
-            logger.error(f"Modelo não encontrado em: {model_path}")
-            self.model_loaded = False
-            self.pipeline = None
         except Exception as e:
-            logger.error(f"Erro ao carregar modelo: {str(e)}")
-            self.model_loaded = False
-            self.pipeline = None
+            logger.error(f"Erro crítico ao carregar modelo: {e}")
+            raise RuntimeError(f"Não foi possível carregar o pipeline: {e}") from e
 
     def is_healthy(self) -> bool:
         """
@@ -54,7 +78,7 @@ class PredictService:
         Returns:
             True se o modelo foi carregado com sucesso, False caso contrário.
         """
-        return self.model_loaded
+        return hasattr(self, "pipeline") and self.pipeline is not None
 
     def _prepare_input_data(self, customer: CustomerInput) -> pd.DataFrame:
         """
@@ -67,18 +91,10 @@ class PredictService:
         Returns:
             DataFrame com os dados preparados para predição
         """
-        # Converter objeto Pydantic para dicionário
-        data = customer.model_dump()
-
-        # Converter total_charges de string para float
-        try:
-            data["total_charges"] = float(data["total_charges"])
-        except (ValueError, TypeError):
-            data["total_charges"] = 0.0
-            logger.warning("Erro ao converter total_charges para float, usando 0.0")
-
-        # Criar DataFrame
-        df = pd.DataFrame([data])
+        # O DTO já garante tipos, domínios e ausência de colunas desconhecidas.
+        # customer_id é metadado de rastreabilidade e não é uma feature do modelo.
+        data = customer.model_dump(include=set(MODEL_FEATURE_COLUMNS))
+        df = pd.DataFrame([data], columns=MODEL_FEATURE_COLUMNS)
 
         logger.debug(f"Dados preparados com {len(df.columns)} features")
 
@@ -102,7 +118,7 @@ class PredictService:
             prob_churn = 0.0
             confidence = 0.5
 
-        return prob_churn, confidence
+        return round(prob_churn, 3), round(confidence, 3)
 
     def predict(self, customer: CustomerInput) -> PredictionResponse:
         """
@@ -144,7 +160,7 @@ class PredictService:
                 customer_id=customer.customer_id,
                 prediction=prediction,
                 prediction_label=prediction_label,
-                prediction_probability=prob_churn,
+                churn_probability=prob_churn,
                 confidence=confidence,
             )
 

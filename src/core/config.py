@@ -24,13 +24,14 @@ class Settings(BaseSettings):
     api_prefix: str = "/api"
     api_v1_prefix: str = "/api/v1"
 
+    # Modelo
+    model_name: str = "mlp.joblib"
+
     # Caminhos
     project_root: Path = Path(__file__).resolve().parents[2]
     models_dir: Path = project_root / "models"
     data_dir: Path = project_root / "data"
-
-    # Modelo
-    model_name: str = "mlp.joblib"
+    model_path: Path = models_dir / model_name
 
     # Logging
     log_level: str = "INFO"
