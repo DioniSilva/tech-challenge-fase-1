@@ -1,86 +1,78 @@
+from types import SimpleNamespace
+from unittest.mock import Mock
+
 import pandas as pd
-import numpy as np
-import pytest
 
-from train_mlp import calculate_metrics, select_best_model, train
+from data.training_result import TrainingResult
+import train_mlp
 
 
-def test_train_returns_fitted_pipeline_and_metrics():
-    pytest.importorskip("torch")
-    pytest.importorskip("imblearn")
-
-    df = pd.DataFrame(
-        {
-            "feature_a": np.random.rand(30),
-            "feature_b": np.random.rand(30),
-            "feature_c": np.random.rand(30),
-            "Total Charges": [float(i) for i in range(30)],
-            "Churn Value": [0] * 15 + [1] * 15,
-        }
+def make_result(threshold, recall, pr_auc):
+    return TrainingResult(
+        threshold=threshold,
+        accuracy=0.8,
+        precision=0.7,
+        recall=recall,
+        f1_score=0.75,
+        roc_auc=0.82,
+        pr_auc=pr_auc,
+        confidence_score=0.9,
+        run_id=f"run-{threshold}",
     )
 
-    pipeline, metrics = train(df)
 
-    assert hasattr(pipeline, "predict")
-    assert hasattr(pipeline, "predict_proba")
-    assert isinstance(metrics, dict)
-    assert set(metrics.keys()) == {
-        "accuracy",
-        "precision",
-        "recall",
-        "f1_score",
-        "roc_auc",
-        "pr_auc",
-        "average_precision",
-        "confidence_index",
-    }
+def test_print_comparison_logs_sorted_champion(monkeypatch):
+    logger = Mock()
+    monkeypatch.setattr(train_mlp, "logger", logger)
 
-    predictions = pipeline.predict(df.drop(columns=["Churn Value"]))
-    assert len(predictions) == len(df)
-    assert set(predictions).issubset({0, 1})
-
-
-def test_select_best_model_prefers_recall_then_pr_auc():
     results = [
-        {"threshold": 0.3, "recall": 0.80, "pr_auc": 0.60},
-        {"threshold": 0.45, "recall": 0.85, "pr_auc": 0.55},
-        {"threshold": 0.7, "recall": 0.85, "pr_auc": 0.65},
+        make_result(0.45, recall=0.7, pr_auc=0.8),
+        make_result(0.30, recall=0.9, pr_auc=0.6),
+        make_result(0.70, recall=0.9, pr_auc=0.9),
     ]
 
-    best = select_best_model(results)
+    train_mlp.print_comparison(results)
 
-    assert best["threshold"] == 0.7
-    assert best["recall"] == 0.85
-    assert best["pr_auc"] == 0.65
+    assert logger.info.call_count == 2
+    champion_log_args = logger.info.call_args_list[1].args
+    assert champion_log_args[1:] == (0.70, 0.9, 0.9)
 
 
-def test_calculate_metrics_returns_expected_keys():
-    class DummyPipeline:
-        def predict(self, X):
-            return np.array([0 if i < len(X) / 2 else 1 for i in range(len(X))])
-
-        def predict_proba(self, X):
-            proba = np.linspace(0.1, 0.9, len(X))
-            return np.vstack([1 - proba, proba]).T
-
+def test_main_trains_thresholds_selects_champion_and_saves_pipeline(monkeypatch):
     df = pd.DataFrame(
         {
-            "feature_a": np.random.rand(20),
-            "feature_b": np.random.rand(20),
-            "feature_c": np.random.rand(20),
-            "Total Charges": [float(i) for i in range(20)],
-            "Churn Value": [0] * 10 + [1] * 10,
+            "feature_a": range(10),
+            "feature_b": range(10, 20),
+            train_mlp.TARGET: [0, 1] * 5,
         }
     )
+    outputs = [
+        SimpleNamespace(pipeline="pipeline-045", metrics=make_result(0.45, 0.5, 0.7)),
+        SimpleNamespace(pipeline="pipeline-030", metrics=make_result(0.30, 0.8, 0.6)),
+        SimpleNamespace(pipeline="pipeline-070", metrics=make_result(0.70, 0.8, 0.9)),
+    ]
 
-    pipeline = DummyPipeline()
-    metrics = calculate_metrics(pipeline, df.drop(columns=["Churn Value"]), df["Churn Value"])
+    trainer_instance = Mock()
+    trainer_instance.train.side_effect = outputs
+    trainer_class = Mock(return_value=trainer_instance)
+    save_pipeline = Mock()
+    print_comparison = Mock()
 
-    assert isinstance(metrics["accuracy"], float)
-    assert 0.0 <= metrics["precision"] <= 1.0
-    assert 0.0 <= metrics["recall"] <= 1.0
-    assert 0.0 <= metrics["f1_score"] <= 1.0
-    assert 0.0 <= metrics["roc_auc"] <= 1.0
-    assert 0.0 <= metrics["pr_auc"] <= 1.0
-    assert 0.0 <= metrics["average_precision"] <= 1.0
-    assert 0.0 <= metrics["confidence_index"] <= 1.0
+    monkeypatch.setattr(train_mlp, "configurar_logging", Mock())
+    monkeypatch.setattr(train_mlp, "set_seeds", Mock())
+    monkeypatch.setattr(train_mlp.MLFlowTracker, "configure_mlflow_tracking", Mock())
+    monkeypatch.setattr(train_mlp, "carregar_dados", Mock(return_value=df))
+    monkeypatch.setattr(train_mlp, "Trainer", trainer_class)
+    monkeypatch.setattr(train_mlp, "save_pipeline", save_pipeline)
+    monkeypatch.setattr(train_mlp, "print_comparison", print_comparison)
+
+    train_mlp.main()
+
+    assert trainer_class.call_count == 1
+    assert [call.args[-1] for call in trainer_instance.train.call_args_list] == [
+        0.45,
+        0.30,
+        0.70,
+    ]
+    save_pipeline.assert_called_once_with("pipeline-070")
+    print_comparison.assert_called_once_with([output.metrics for output in outputs])
