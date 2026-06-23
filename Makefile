@@ -28,6 +28,16 @@ lint:
 	$(UV_RUN) ruff format --check
 	$(UV_RUN) ruff check
 
+## Instalar hooks locais do pre-commit
+.PHONY: pre-commit-install
+pre-commit-install:
+	$(UV_RUN) pre-commit install
+
+## Rodar todos os hooks manualmente
+.PHONY: pre-commit-run
+pre-commit-run:
+	$(UV_RUN) pre-commit run --all-files
+
 ## Formatar codigo-fonte com ruff (`make lint` para checar)
 .PHONY: format
 format:
