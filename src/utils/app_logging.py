@@ -77,6 +77,9 @@ def configurar_logging(
     logger.setLevel(nivel)
     logger.propagate = False
 
+    mlflow_logger = _std_logging.getLogger("mlflow")
+    mlflow_logger.setLevel(_std_logging.ERROR)
+
     if json_formatter:
         formatter = StructuredJsonFormatter(service_name=service_name)
         stream_handler = _std_logging.StreamHandler()

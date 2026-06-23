@@ -21,6 +21,9 @@ MODELS_DIR.mkdir(parents=True, exist_ok=True)
 TARGET = "Churn Value"
 
 
+MLFLOW_DB_PATH_AND_NAME = "./data/mlflow_tracking/mlflow.db"
+
+
 def set_seeds(seed: int = RANDOM_STATE):
     np.random.seed(seed)
     try:
