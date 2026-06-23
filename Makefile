@@ -6,6 +6,7 @@ PROJECT_NAME = tech-challenge-fase-1
 PYTHON_VERSION = 3.12
 UV_RUN = uv run
 PYTHON_INTERPRETER = $(UV_RUN) python
+DOCKER_PYTHON ?= python
 
 #################################################################################
 # COMANDOS                                                                      #
@@ -19,7 +20,38 @@ setup:
 	@echo ">>> New uv virtual environment created. Activate with:"
 	@echo ">>> Windows: .\\.venv\\Scripts\\activate"
 	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
+	uv sync --extra train --extra docs --extra notebook --extra dev --extra ui
+
+
+## Cria ambiente enxuto para servir a API localmente
+.PHONY: setup-runtime
+setup-runtime:
+	uv venv --python $(PYTHON_VERSION)
+	@echo ">>> New uv virtual environment created. Activate with:"
+	@echo ">>> Windows: .\\.venv\\Scripts\\activate"
+	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
 	uv sync
+
+
+## Instalar dependencias do projeto em um interpretador alvo (uso no Docker)
+.PHONY: install-runtime
+install-runtime:
+	uv pip install --python $(DOCKER_PYTHON) .
+
+
+## Validar existencia do modelo treinado localmente
+.PHONY: check-model
+check-model:
+	@if [ ! -f models/mlp.joblib ]; then \
+		echo "models/mlp.joblib ausente. Rode 'make train' antes de compilar a imagem."; \
+		exit 1; \
+	fi
+
+
+## Compilar a imagem Docker usando o modelo treinado localmente
+.PHONY: docker-build
+docker-build: check-model
+	docker build -t $(PROJECT_NAME):local .
 
 
 ## Lint com ruff (`make format` para formatar)

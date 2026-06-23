@@ -15,6 +15,13 @@ Projeto Final Fase 1 MLET10
 make setup
 ```
 
+O target `make setup` instala o ambiente completo de desenvolvimento:
+runtime da API, treino, notebooks, documentacao e testes.
+
+Se voce quiser apenas subir a API localmente sem o stack de treino/notebook:
+
+```bash
+make setup-runtime
 ### API e interface de inferência
 
 Para iniciar apenas a API FastAPI:
@@ -57,6 +64,56 @@ make docs-build
 
 ```bash
 make run-mlflow
+```
+
+## Docker
+
+### Fluxo recomendado
+
+O artefato `models/mlp.joblib` e gerado localmente e nao deve ser versionado.
+Como a pasta `data/` fica fora do contexto do Docker, o build da imagem nao treina o modelo.
+Neste repositorio, a origem oficial do modelo para a imagem Docker passa a ser local: `make train`.
+O fluxo esperado e:
+
+```bash
+make setup
+make train
+make docker-build
+```
+
+### Build da imagem
+
+```bash
+make docker-build
+```
+
+### Execucao local
+
+```bash
+docker run --rm -p 8000:8000 tech-challenge-fase-1:local
+```
+
+A imagem embarca o codigo da API e o artefato `models/mlp.joblib`.
+Como esse artefato serializa `TorchMLPClassifier`, o runtime da imagem tambem
+precisa incluir `torch` para que `joblib.load()` funcione nos endpoints da API.
+Se o arquivo nao existir, o build falha cedo com a instrucao para executar `make train` antes.
+CI e registry de modelos continuam como evolucoes futuras; ainda nao sao a origem adotada neste projeto.
+Por padrao, o container sobe a API FastAPI em `http://localhost:8000`.
+
+## Kustomize
+
+Os manifests Kubernetes ficam em `k8s/`.
+
+### Renderizar manifests
+
+```bash
+kubectl kustomize k8s/overlays/local
+```
+
+### Aplicar no cluster
+
+```bash
+kubectl apply -k k8s/overlays/local
 ```
 
 ## Estrutura do Projeto
