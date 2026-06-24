@@ -16,7 +16,7 @@ Este `modelcard` documenta o modelo preditivo de cancelamento de clientes (churn
 |----------|-------|
 | **Nome** |  MLP (PyTorch) |
 | **Tipo** | Classificação binária |
-| **Algoritmo** | Redes Neurais |
+| **Algoritmo** | Redes neurais |
 | **Framework** | PyTorch |
 | **Versão do Modelo** | 1.0.5 |
 | **Data de Criação** | Junho de 2026 |
