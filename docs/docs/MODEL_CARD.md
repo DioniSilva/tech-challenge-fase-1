@@ -6,7 +6,7 @@
 
 ## Sumário
 
-Este Model Card documenta o modelo preditivo de cancelamento de clientes (Churn). O modelo utiliza uma abordagem de classificação binária com regressão logística, balanceada para lidar com o desbalanceamento de classes presente nos dados históricos.
+Este `modelcard` documenta o modelo preditivo de cancelamento de clientes (churn) finalista. O modelo utiliza uma abordagem de redes neurais lidando com o desbalanceamento de classes presente nos dados históricos.
 
 ---
 
@@ -14,12 +14,12 @@ Este Model Card documenta o modelo preditivo de cancelamento de clientes (Churn)
 
 | Atributo | Valor |
 |----------|-------|
-| **Nome** | Baseline Churn Prediction Model |
-| **Tipo** | Classificação Binária |
-| **Algoritmo** | Regressão Logística |
-| **Framework** | scikit-learn |
-| **Versão do Modelo** | 1.0.0 |
-| **Data de Criação** | Maio 2026 |
+| **Nome** |  MLP (PyTorch) |
+| **Tipo** | Classificação binária |
+| **Algoritmo** | Redes Neurais |
+| **Framework** | PyTorch |
+| **Versão do Modelo** | 1.0.5 |
+| **Data de Criação** | Junho de 2026 |
 | **Licença** | MIT |
 | **Responsável** | Equipe de MLEks - Tech Challenge |
 
@@ -45,18 +45,17 @@ Este Model Card documenta o modelo preditivo de cancelamento de clientes (Churn)
 ### Características do Dataset
 - **Fonte Principal**: [Telco customer churn: IBM dataset](https://www.kaggle.com/datasets/yeanzc/telco-customer-churn-ibm-dataset)
 - **Tamanho Original**: 7.043 registros
-- **Período de Cobertura**: Dados históricos de clientes de telecomunicações
-- **Divisão**: 80% Treino / 20% Teste
+- **Período de Cobertura**: dados históricos de clientes de telecomunicações
+- **Divisão**: 80% treino / 20% teste
 
-### Features Utilizadas
-- **Dados Demográficos**: Idade, Gênero, Parceria, Dependentes
-- **Dados de Contrato**: Tipo de Contrato, Duração da Relação (tenure)
-- **Dados de Serviço**: Internet, Telefonia, Segurança Online, Backup, etc.
-- **Dados Financeiros**: Cobrança Mensal, Gasto Médio Mensal, Método de Pagamento
+### Atributos Utilizados
+- **Dados Demográficos**: gênero, localidade, indicador se idade é acima de 65 anos, indicador se estado civil é casado, indicador se moradia possui dependentes
+- **Dados Contratuais**: duração da relação, indicador se conta digital, forma de pagamento, valor mensal cobrado, valor trimestral cobrado, carência
+- **Dados de Serviço**: indicador se telefone fixo, indicador se telefone móvel, indicador se internet fixa, indicadores de proteção, indicadores de streaming
 
 ### Atributos Sensíveis Mapeados
-- **Gênero (Masculino/Feminino)** - Utilizado exclusivamente para auditoria pós-treino
-- **Senior Citizen** - Monitorado para vieses etários
+- **Gênero (masculino/feminino)**: utilizado para verificação de viés pós-treino
+- **Terceira idade**: idem
 
 ---
 
@@ -65,18 +64,19 @@ Este Model Card documenta o modelo preditivo de cancelamento de clientes (Churn)
 ### Métricas Agregadas
 | Métrica | Valor |
 |---------|-------|
-| **Acurácia (Treino)** | 0.7419 |
-| **Acurácia (Teste)** | 0.7466 |
-| **Precisão** | 0.5354 |
-| **Recall (Sensibilidade)** | 0.8125 |
-| **F1-Score** | 0.6455 |
-| **ROC-AUC** | 0.8463 |
+| **Acurácia (treino)** | 0.6998 |
+| **Precisão** | 0.4594 |
+| **Sensibilidade** | 0.8986 |
+| **F1-Score** | 0.6080 |
+| **ROC-AUC** | 0.8597 |
 
-### Interpretação
-- **Precisão 53.54%**: Do total de predições positivas (churn), ~54% estão corretas
-- **Recall 81.25%**: O modelo identifica ~81% dos clientes que realmente vão fazer churn
-- **F1-Score 0.6455**: Balanço entre precisão e recall
-- **ROC-AUC 0.8463**: Capacidade discriminativa do modelo
+### Interpretações de Performance
+Pela natureza do problema, entendemos que as métricas mais importantes são sensibilidade e precisão.
+
+- **Sensibilidade**: dentre todas as classificações da classe positiva (churn) reais, quantas estão identificadas. Neste modelo, aproximadamente 90% das observações são identificadas.
+- **Precisão**: dentre todas as classificações da classe positiva (churn) esperadas, quantas estão corretas. Neste modelo, aproximadamente 46% das previsões são corretas.
+
+Tais métricas são importantes por dois motivos principais: (1) queremos direcionar ações de retenção aos clientes que de fato irão cancelar o serviço (sensibilidade); e (2) queremos que tais ações sejam eficientes economicamente (precisão). A primeira mantém a base ativa, enquanto a segunda mantém o custo controlado.
 
 ---
 
@@ -149,12 +149,17 @@ y_prob = model.predict_proba(X_novo)[:, 1]
 
 | Versão | Data | Principais Mudanças |
 |--------|------|---------------------|
-| 1.0.0 | Maio 2026 | Release inicial com Logistic Regression |
+| 1.0.1 | Maio de 2026 | Release inicial com técnica de regressão logística (baseline) |
+| 1.0.2 | Maio de 2026 | Nova release com técnica de árvore de decisão |
+| 1.0.3 | Junho de 2026 | Nova release com técnica de random forest |
+| 1.0.4 | Junho de 2026 | Nova release com técnica de gredient boosting |
+| 1.0.5 | Junho de 2026 | Release final com técnica de rede neural |
 
 ---
 
 ## 9. Contato e Suporte
 
-- **Equipe Responsável**: MLEks - Tech Challenge
-- **Para Dúvidas**: Consultar documentação no repositório
-- **Avisos de Retraining**: Monitorar performance mensal
+- **Equipe responsável**: MLEks - Tech Challenge
+- **Repositório**: https://github.com/DioniSilva/tech-challenge-fase-1
+- **Em caso de dúvidas**: consultar a documentação no repositório
+- **Avisos de retreino**: recomenda-se monitorar performance mensalmente
