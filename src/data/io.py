@@ -7,6 +7,12 @@ from utils.app_logging import logger
 
 def carregar_dados() -> pd.DataFrame:
     logger.info(f"Carregando dados do arquivo: {DATA_FILE}")
+    if not DATA_FILE.exists():
+        raise FileNotFoundError(
+            "Dataset nao encontrado em "
+            f"{DATA_FILE}. O arquivo Telco_customer_churn.xlsx deve estar "
+            "versionado em data/raw/ antes de executar make train ou make serve."
+        )
     return pd.read_excel(DATA_FILE)
 
 

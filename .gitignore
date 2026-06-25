@@ -1,6 +1,19 @@
 # Data
-# Por padrao, mantemos `data/` fora do git. Excecao: tracking leve do MLflow.
+# Por padrao, mantemos `data/` fora do git.
+# Excecao: dataset oficial versionado e tracking leve do MLflow.
 /data/*
+!/data/.gitkeep
+!/data/raw/
+!/data/raw/.gitkeep
+!/data/raw/Telco_customer_churn.xlsx
+!/data/interim/
+!/data/interim/.gitkeep
+!/data/processed/
+!/data/processed/.gitkeep
+!/data/external/
+!/data/external/.gitkeep
+!/data/mlflow_tracking/
+!/data/mlflow_tracking/.gitkeep
 /models/mlp.joblib
 # !/data/mlflow_tracking/
 # !/data/mlflow_tracking/**
@@ -125,10 +138,7 @@ ipython_config.py
 #Pipfile.lock
 
 # UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-uv.lock
+#   Keep uv.lock versioned for reproducible application builds.
 
 # poetry
 #   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.

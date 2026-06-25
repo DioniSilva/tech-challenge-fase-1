@@ -21,6 +21,7 @@
     <div class="text-center home-actions">
       <a class="btn btn-primary btn-lg" href="getting-started/">Primeiros passos</a>
       <a class="btn btn-default btn-lg" href="comandos/">Comandos</a>
+      <a class="btn btn-default btn-lg" href="arquitetura/">Arquitetura</a>
       <a class="btn btn-default btn-lg" href="ml-canvas/">ML Canvas</a>
       <a class="btn btn-default btn-lg" href="dataset/">Dataset</a>
       <a class="btn btn-default btn-lg" href="comparativo-modelos/">Comparativo entre Modelos</a>
@@ -77,6 +78,16 @@
     </div>
 
     <div class="row">
+      <div class="col-md-6">
+        <div class="home-card">
+          <h3>Arquitetura versionada</h3>
+          <p>
+            A pagina <a href="arquitetura/">Arquitetura</a> mostra o pipeline de ML
+            e o fluxo da API com diagramas Mermaid versionados em Markdown.
+          </p>
+        </div>
+      </div>
+
       <div class="col-md-6">
         <div class="home-card">
           <h3>ML Canvas</h3>
