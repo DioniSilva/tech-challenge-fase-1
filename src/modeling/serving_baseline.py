@@ -102,9 +102,7 @@ class BaselineServingTransformer(BaseEstimator, TransformerMixin):
         features["payment_method_Electronic check"] = self._match(
             df, "payment_method", "Electronic check"
         )
-        features["payment_method_Mailed check"] = self._match(
-            df, "payment_method", "Mailed check"
-        )
+        features["payment_method_Mailed check"] = self._match(df, "payment_method", "Mailed check")
 
         return features.reindex(columns=self.FEATURE_COLUMNS, fill_value=0.0)
 

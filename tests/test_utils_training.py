@@ -74,8 +74,13 @@ def test_log_training_logs_params_metrics_model_and_pipeline(monkeypatch):
     assert logged_metrics["accuracy"] == 0.91
     assert logged_metrics["confidence_score"] == 0.93
 
-    assert log_model.call_args_list[0].kwargs == {"sk_model": model, "artifact_path": "model"}
+    assert log_model.call_args_list[0].kwargs == {
+        "sk_model": model,
+        "artifact_path": "model",
+        "serialization_format": mlflow_tracker.mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
+    }
     assert log_model.call_args_list[1].kwargs == {
         "sk_model": pipeline,
         "artifact_path": "pipeline",
+        "serialization_format": mlflow_tracker.mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
     }

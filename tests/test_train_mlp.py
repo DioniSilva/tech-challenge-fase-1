@@ -43,6 +43,8 @@ def test_main_trains_thresholds_selects_champion_and_saves_pipeline(monkeypatch)
         {
             "feature_a": range(10),
             "feature_b": range(10, 20),
+            "Gender": ["Female", "Male"] * 5,
+            "Senior Citizen": ["Yes", "No"] * 5,
             train_mlp.TARGET: [0, 1] * 5,
         }
     )
@@ -57,6 +59,8 @@ def test_main_trains_thresholds_selects_champion_and_saves_pipeline(monkeypatch)
     trainer_class = Mock(return_value=trainer_instance)
     save_pipeline = Mock()
     print_comparison = Mock()
+    metrics_by_gender = Mock()
+    metrics_by_senior_citizen = Mock()
 
     monkeypatch.setattr(train_mlp, "configurar_logging", Mock())
     monkeypatch.setattr(train_mlp, "set_seeds", Mock())
@@ -65,6 +69,12 @@ def test_main_trains_thresholds_selects_champion_and_saves_pipeline(monkeypatch)
     monkeypatch.setattr(train_mlp, "Trainer", trainer_class)
     monkeypatch.setattr(train_mlp, "save_pipeline", save_pipeline)
     monkeypatch.setattr(train_mlp, "print_comparison", print_comparison)
+    monkeypatch.setattr(train_mlp, "getMetricsForPopulationByGender", metrics_by_gender)
+    monkeypatch.setattr(
+        train_mlp,
+        "getMetricsForPopulationBySeniorCitizen",
+        metrics_by_senior_citizen,
+    )
 
     train_mlp.main()
 
@@ -76,3 +86,5 @@ def test_main_trains_thresholds_selects_champion_and_saves_pipeline(monkeypatch)
     ]
     save_pipeline.assert_called_once_with("pipeline-070")
     print_comparison.assert_called_once_with([output.metrics for output in outputs])
+    assert metrics_by_gender.call_count == 2
+    assert metrics_by_senior_citizen.call_count == 2

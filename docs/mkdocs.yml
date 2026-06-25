@@ -17,6 +17,7 @@ extra_css:
 nav:
   - Início: index.md
   - Projeto:
+      - Arquitetura: arquitetura.md
       - Model Card: MODEL_CARD.md
       - Visão geral (ML Canvas): ml-canvas.md
       - Dataset: dataset.md

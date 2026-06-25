@@ -55,21 +55,33 @@ def main():
 
     print_comparison([o.metrics for o in outputs])
 
-    getMetricsForPopulationByGender(X_test, y_test, champion.pipeline, champion.metrics.threshold, 'Female')
-    getMetricsForPopulationByGender(X_test, y_test, champion.pipeline, champion.metrics.threshold, 'Male')
-    getMetricsForPopulationBySeniorCitizen(X_test, y_test, champion.pipeline, champion.metrics.threshold, 'Yes')
-    getMetricsForPopulationBySeniorCitizen(X_test, y_test, champion.pipeline, champion.metrics.threshold, 'No')
+    getMetricsForPopulationByGender(
+        X_test, y_test, champion.pipeline, champion.metrics.threshold, "Female"
+    )
+    getMetricsForPopulationByGender(
+        X_test, y_test, champion.pipeline, champion.metrics.threshold, "Male"
+    )
+    getMetricsForPopulationBySeniorCitizen(
+        X_test, y_test, champion.pipeline, champion.metrics.threshold, "Yes"
+    )
+    getMetricsForPopulationBySeniorCitizen(
+        X_test, y_test, champion.pipeline, champion.metrics.threshold, "No"
+    )
 
 
 def getMetricsForPopulationByGender(X_test, y_test, pipeline, threshold, gender):
-    getMetricsForSpecificPopulation(X_test, y_test, pipeline, threshold, 'Gender', gender)
+    getMetricsForSpecificPopulation(X_test, y_test, pipeline, threshold, "Gender", gender)
 
 
 def getMetricsForPopulationBySeniorCitizen(X_test, y_test, pipeline, threshold, is_senior_citizen):
-    getMetricsForSpecificPopulation(X_test, y_test, pipeline, threshold, 'Senior Citizen', is_senior_citizen)
+    getMetricsForSpecificPopulation(
+        X_test, y_test, pipeline, threshold, "Senior Citizen", is_senior_citizen
+    )
 
 
-def getMetricsForSpecificPopulation(X_test, y_test, pipeline, threshold, filter_feature, filter_value):
+def getMetricsForSpecificPopulation(
+    X_test, y_test, pipeline, threshold, filter_feature, filter_value
+):
     is_targeted_feature = X_test[filter_feature] == filter_value
 
     X_test_filtered = X_test[is_targeted_feature]
@@ -80,7 +92,7 @@ def getMetricsForSpecificPopulation(X_test, y_test, pipeline, threshold, filter_
         X_test_filtered,
         y_test_filtered,
         threshold,
-        '',
+        "",
     )
 
     logger.info(f"Métricas para grupo de dados filtrado ({filter_feature} = {filter_value}):")
