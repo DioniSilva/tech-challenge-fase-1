@@ -16,7 +16,7 @@ Este `modelcard` documenta o modelo preditivo de cancelamento de clientes (churn
 |----------|-------|
 | **Nome** |  MLP (PyTorch) |
 | **Tipo** | Classificação binária |
-| **Algoritmo** | Redes neurais |
+| **Algoritmo** | Redes Neurais |
 | **Framework** | PyTorch |
 | **Versão do Modelo** | 1.0.5 |
 | **Data de Criação** | Junho de 2026 |
@@ -84,23 +84,33 @@ Tais métricas são importantes por dois motivos principais: (1) queremos direci
 
 ### Métricas Desagregadas por Gênero
 
-| sensitive_feature_0   |   Acurácia |   Precisão |   Taxa de Seleção (Churn) |   Taxa de Falsos Positivos |
-|:----------------------|-----------:|-----------:|--------------------------:|---------------------------:|
-| Female                |     0.7458 |     0.5455 |                    0.4455 |                     0.2871 |
-| Male                  |     0.7475 |     0.5243 |                    0.4156 |                     0.2718 |
+| sensitive_feature_0   |   Acurácia |   Precisão |   Seleção |
+|:----------------------|-----------:|-----------:|----------:|
+| Feminino                |     0.6798 |     0.4185 |     0.9198 |
+| Masculino                  |     0.7475 |     0.5243 |     0.8818 |
+| Não-idoso                |     0.6594 |     0.5542 |     0.9583 |
+| Idoso                  |     0.7076 |     0.4307 |     0.8773 |
 
-### Avaliação de Disparidade
+
+### Avaliação de Disparidade: gênero
 | Métrica de Disparidade | Valor | Interpretação |
 |------------------------|-------|----------------|
-| Disparidade de Acurácia | 0.0017 | Diferença máxima de acurácia entre grupos |
-| Disparidade de Precisão | 0.0211 | Diferença máxima de precisão entre grupos |
-| Disparidade de Taxa de Seleção | 0.0299 | Diferença na proporção de previsões positivas |
+| Disparidade de Acurácia | 0.0677 | Diferença máxima de acurácia entre grupos |
+| Disparidade de Precisão | 0.1058 | Diferença máxima de precisão entre grupos |
+| Disparidade de Taxa de Seleção | 0.0380 | Diferença na proporção de previsões positivas |
+
+### Avaliação de Disparidade: terceira idade
+| Métrica de Disparidade | Valor | Interpretação |
+|------------------------|-------|----------------|
+| Disparidade de Acurácia | 0.0482 | Diferença máxima de acurácia entre grupos |
+| Disparidade de Precisão | 0.1235 | Diferença máxima de precisão entre grupos |
+| Disparidade de Taxa de Seleção | 0.0810 | Diferença na proporção de previsões positivas |
 
 ### Conclusões sobre Equidade
-✓ **Status**: Modelo demonstra equidade razoável entre grupos demográficos
-- Disparidades detectadas estão dentro de limites aceitáveis (<0.10)
-- Não há viés sistemático evidente contra nenhum grupo
-- Recomenda-se monitoramento contínuo durante operacionalização
+Modelo demonstra equidade no limite do razoável, demonstrando alguma tendência entre grupos demográficos (tanto gênero quanto terceira idade).
+- Disparidades detectadas estão dentro de limites aceitáveis (<0.10), exceto Precisão para terceira idade
+- Observa-se algum viés para grupos e métricas, mas sem uma direção óbvia (às vezes maior, às vezes menor)
+- Recomenda-se monitoramento contínuo em produção e um maior entendimento das causas raízes de negócio
 
 ---
 
@@ -112,10 +122,10 @@ Tais métricas são importantes por dois motivos principais: (1) queremos direci
 3. **Mudanças de Mercado**: Performance pode degradar com mudanças econômicas
 
 ### Estratégias de Mitigação
-- ✓ Uso de `class_weight='balanced'` para compensar desbalanceamento
-- ✓ Auditoria periódica com Fairlearn
-- ✓ Monitoramento de drift em produção
-- ✓ Reavaliação a cada 3 meses com dados novos
+- Uso de `class_weight='balanced'` para compensar desbalanceamento
+- Auditoria periódica com Fairlearn
+- Monitoramento de drift em produção
+- Reavaliação a cada 3 meses com dados novos
 
 ### Recomendações
 - Combinar com julgamento humano antes de tomar decisões
@@ -132,7 +142,7 @@ import joblib
 import pandas as pd
 
 # Carregar modelo
-model = joblib.load("baseline_model.joblib")
+model = joblib.load("models/mlp.joblib")
 
 # Preparar dados novos (mesma estrutura do treinamento)
 # X_novo deve ter mesmas features do treinamento
