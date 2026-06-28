@@ -1,16 +1,16 @@
 # MLflow
 
-Este projeto usa o MLflow em modo local (file store) para registrar experimentos.
+Este projeto usa o MLflow em modo local (file store) para registrar experimentos, métricas e artefatos de modelagem.
 
-## Onde fica o historico
+## Onde fica o histórico
 
-O historico de experimentos fica em `data/mlflow_tracking/mlruns/`.
+O histórico de experimentos fica em `data/mlflow_tracking/mlruns/`.
 
-Para manter o repositorio leve, artefatos pesados (modelos, figuras, etc.) nao foram versionados.
+Para manter o repositório leve, artefatos pesados não devem ser versionados.
 
 ## Como abrir a UI
 
-Na raiz do repositorio:
+Na raiz do repositório:
 
 ```bash
 make run-mlflow
@@ -18,12 +18,11 @@ make run-mlflow
 
 Isso sobe o servidor local em `http://127.0.0.1:5000`.
 
-Obs: o target `make run-mlflow` executa o comando dentro de `data/mlflow_tracking/`,
-entao o MLflow usa o `./mlruns` desse diretorio automaticamente.
+O target executa o comando dentro de `data/mlflow_tracking/`, então o MLflow usa o `./mlruns` desse diretório automaticamente.
 
 ## Padrão de uso nos notebooks
 
-Nos notebooks, configurar o tracking para usar o file store do projeto:
+Nos notebooks, configure o tracking para usar o file store do projeto:
 
 ```python
 import mlflow
@@ -32,176 +31,164 @@ mlflow.set_tracking_uri("file:../data/mlflow_tracking/mlruns")
 mlflow.set_experiment("churn_model_classification")
 ```
 
----
+## Experimentos registrados
 
-## Experimentos Registrados
+O projeto possui um experimento principal, `churn_model_classification`, que consolida runs de modelagem para previsão de churn no dataset Telco.
 
-O projeto possui um experimento principal: **`churn_model_classification`** que consolida todos os runs de modelagem para previsão de churn no dataset Telco.
+### Overview dos experimentos
 
-### Overview dos Experimentos
+![Experiment Overview](img/experiment_overview_01.png)
 
-![Experiment Overview](../../reports/figures/experiment_overview_01.png)
+A interface mostra o histórico de experimentos com runs, timestamps e status.
 
-A interface mostra o histórico completo de experimentos com suas respectivas runs, timestamps e status.
+## Runs e métricas
 
----
+### Visualização de runs
 
-## Runs e Métricas
+![Runs Overview](img/runs_overview_01.png)
 
-### Visualização de Runs
+Cada run pode registrar:
 
-![Runs Overview](../../reports/figures/runs_overview_01.png)
+- **Parâmetros**: configurações do modelo, pré-processamento e treinamento
+- **Métricas**: acurácia, precisão, recall/sensibilidade, F1-Score, ROC-AUC, PR-AUC e gaps de treino/teste quando disponíveis
+- **Artefatos**: modelos, gráficos, relatórios e arquivos auxiliares de avaliação
 
-Cada run no MLflow registra:
-- **Parâmetros**: Configurações do modelo (random_state, max_iter, class_weight, etc.)
-- **Métricas**: Acurácia, Precisão, Recall, F1-Score, ROC-AUC
-- **Artefatos**: Modelos, gráficos, relatórios
+### Detalhes dos experimentos
 
-### Detalhes dos Experimentos
+![Experiment Details](img/experiment_overview_02.png)
 
-![Experiment Details](../../reports/figures/experiment_overview_02.png)
+A visualização detalhada permite comparar múltiplas runs lado a lado.
 
-A visualização detalhada mostra comparação de múltiplas runs lado a lado para análise comparativa.
+### Métricas de performance
 
-### Métricas de Performance
+![Metrics Overview](img/metrics_overview_01.png)
 
-![Metrics Overview](../../reports/figures/metrics_overview_01.png)
+As métricas ajudam a comparar performance e estabilidade:
 
-As métricas são rastreadas em tempo real durante o treinamento:
-- **Train/Test Accuracy**: Monitora overfitting
-- **F1-Score**: Avalia balanço entre Precisão e Recall
-- **ROC-AUC**: Capacidade discriminativa do modelo
-- **Accuracy Gap**: Diferença entre treino e teste
+- **Train/Test Accuracy**: monitora overfitting
+- **F1-Score**: avalia o balanço entre precisão e recall
+- **ROC-AUC**: mede capacidade discriminativa
+- **PR-AUC**: útil para classes desbalanceadas
+- **Accuracy Gap**: diferença entre treino e teste
 
----
+## Artefatos e modelos registrados
 
-## Artefatos e Modelos Registrados
+### Artefatos do modelo
 
-### Artefatos do Modelo
+![Artifacts Overview](img/artifacts_overview_01.png)
 
-![Artifacts Overview](../../reports/figures/artifacts_overview_01.png)
+Cada run pode armazenar múltiplos artefatos:
 
-Cada run armazena múltiplos artefatos:
-- `confusion_matrix.png` - Matriz de confusão do modelo
-- `roc_curve.png` - Curva ROC e AUC
-- `feature_importance_top15.png` - Features mais importantes
-- `classification_report.json` - Relatório detalhado
-- `feature_importance.json` - Importância de todas as features
+- `confusion_matrix.png` - matriz de confusão do modelo
+- `roc_curve.png` - curva ROC e AUC
+- `classification_report.json` - relatório detalhado
+- arquivos de importância de features, quando o algoritmo permite esse tipo de interpretação
+- modelos serializados ou referências para artefatos de treinamento
 
-### Modelo Registrado
+### Modelo operacional
 
-![Model Overview](../../reports/figures/model_overview_01.png)
+![Model Overview](img/model_overview_01.png)
 
-O modelo treinado é persistido no MLflow com:
-- **Framework**: scikit-learn (LogisticRegression)
-- **Formato**: Pickle (MLflow SKlearn flavor)
-- **Localização**: `data/mlflow_tracking/mlruns/<experiment_id>/<run_id>/artifacts/baseline_model/`
+O histórico de MLflow inclui baselines clássicos e experimentos de comparação. O artefato operacional usado pela API é a MLP PyTorch gerada localmente:
 
-#### Acessar o Modelo
+| Item | Valor |
+|---|---|
+| Modelo final | MLP (PyTorch) |
+| Artefato servido | `models/mlp.joblib` |
+| Comando de geração | `make train` |
+| Tracking local | `data/mlflow_tracking/mlruns/` |
+
+Os baselines registrados no MLflow continuam úteis para comparação e rastreabilidade, mas não são a origem oficial da API em runtime.
+
+#### Acessar o modelo operacional
 
 ```python
-import mlflow
+import joblib
 
-# Conectar ao MLflow
-mlflow.set_tracking_uri("file:../data/mlflow_tracking/mlruns")
-
-# Opção 1: Carregar modelo pelo URI
-model_uri = "runs://<RUN_ID>/baseline_model"
-model = mlflow.sklearn.load_model(model_uri)
-
-# Opção 2: Carregar modelo registrado (se disponível no registry)
-model = mlflow.sklearn.load_model("models:/baseline_model/latest")
-
-# Fazer predições
-predictions = model.predict(X_test)
+model = joblib.load("models/mlp.joblib")
+predictions = model.predict(X_novo)
+probabilities = model.predict_proba(X_novo)
 ```
 
----
+Para analisar runs e artefatos históricos, abra a UI com `make run-mlflow`.
 
-## Estrutura de Diretórios do MLflow
+## Estrutura de diretórios do MLflow
 
-```
+```text
 data/mlflow_tracking/mlruns/
-├── 0/                                    # Experiment ID 0
+├── 0/
 │   └── meta.yaml
-├── 971373804994683566/                   # Experiment ID (churn_model_classification)
+├── 971373804994683566/
 │   ├── meta.yaml
 │   ├── <run_id_1>/
 │   │   ├── meta.yaml
 │   │   ├── params/
 │   │   ├── metrics/
 │   │   ├── artifacts/
-│   │   │   ├── baseline_model/
 │   │   │   ├── confusion_matrix.png
 │   │   │   ├── roc_curve.png
-│   │   │   └── feature_importance_top15.png
+│   │   │   ├── classification_report.json
+│   │   │   └── ...
 │   │   └── tags/
 │   ├── <run_id_2>/
 │   └── ...
 ├── models/
-│   └── Baseline Churn Prediction Model/
 └── tags/
 ```
 
----
-
-## Monitoramento e Boas Práticas
+## Monitoramento e boas práticas
 
 ### Rastreabilidade
-- ✓ Cada run é identificável por UUID único
-- ✓ Todos os parâmetros e hiperparâmetros são registrados
-- ✓ Métricas são capturadas em múltiplos timestamps
-- ✓ Reproducibilidade garantida via `random_state` fixo
 
-### Comparação de Modelos
+- Cada run é identificável por UUID único
+- Parâmetros e hiperparâmetros relevantes são registrados
+- Métricas de avaliação ficam disponíveis para comparação
+- O modelo servido pela API é recriado por `make train`
+
+### Comparação de modelos
+
 O MLflow permite comparar múltiplos runs:
+
 1. Abrir a UI em `http://127.0.0.1:5000`
 2. Selecionar as runs desejadas
 3. Comparar métricas, parâmetros e artefatos lado a lado
 
-### Seleção do Melhor Modelo
+### Seleção do melhor modelo
+
 ```python
-# Buscar o melhor run por métrica
 best_run = client.search_runs(
     experiment_ids=["971373804994683566"],
-    order_by=["metrics.test_roc_auc DESC"],
-    max_results=1
+    order_by=["metrics.roc_auc DESC"],
+    max_results=1,
 )[0]
 
-best_model_uri = f"runs:/{best_run.info.run_id}/baseline_model"
+best_run_id = best_run.info.run_id
 ```
 
----
+## Próximos passos: otimização e registro
 
-## Próximos Passos: Otimização e Registro
+### 1. Consolidar critérios de promoção
 
-### 1. Experimentar Novos Modelos
-- Random Forest
-- XGBoost
-- SVM com kernel RBF
+- Definir métrica primária por objetivo de negócio
+- Registrar o threshold operacional usado pela API
+- Documentar quando um novo modelo substitui o champion
 
-### 2. Tuning de Hiperparâmetros
+### 2. Tuning de hiperparâmetros
+
 - GridSearchCV / RandomizedSearchCV
 - Cada combinação registrada como um novo run
 
-### 3. Registrar Melhor Modelo
+### 3. Registrar melhor modelo
+
 ```python
 mlflow.register_model(
-    model_uri=best_model_uri,
-    name="telco_churn_predictor"
+    model_uri="runs:/<RUN_ID>/<ARTIFACT_PATH>",
+    name="telco_churn_predictor",
 )
 
-# Transição para Staging
 client.transition_model_version_stage(
     name="telco_churn_predictor",
     version=1,
-    stage="Staging"
-)
-
-# Após validação, promover para Production
-client.transition_model_version_stage(
-    name="telco_churn_predictor",
-    version=1,
-    stage="Production"
+    stage="Staging",
 )
 ```

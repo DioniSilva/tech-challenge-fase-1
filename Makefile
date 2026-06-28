@@ -6,7 +6,9 @@ PROJECT_NAME = tech-challenge-fase-1
 PYTHON_VERSION = 3.12
 UV_RUN = uv run
 PYTHON_INTERPRETER = $(UV_RUN) python
+HELP_PYTHON ?= python3
 DOCKER_PYTHON ?= python
+DATA_FILE = data/raw/Telco_customer_churn.xlsx
 
 #################################################################################
 # COMANDOS                                                                      #
@@ -17,9 +19,9 @@ DOCKER_PYTHON ?= python
 .PHONY: setup
 setup:
 	uv venv --python $(PYTHON_VERSION)
-	@echo ">>> New uv virtual environment created. Activate with:"
-	@echo ">>> Windows: .\\.venv\\Scripts\\activate"
-	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
+	@printf '%s\n' ">>> New uv virtual environment created. Activate with:"
+	@printf '%s\n' ">>> Windows: .\.venv\Scripts\activate"
+	@printf '%s\n' ">>> Unix/macOS: source ./.venv/bin/activate"
 	uv sync --extra train --extra docs --extra notebook --extra dev --extra ui
 
 
@@ -27,9 +29,9 @@ setup:
 .PHONY: setup-runtime
 setup-runtime:
 	uv venv --python $(PYTHON_VERSION)
-	@echo ">>> New uv virtual environment created. Activate with:"
-	@echo ">>> Windows: .\\.venv\\Scripts\\activate"
-	@echo ">>> Unix/macOS: source ./.venv/bin/activate"
+	@printf '%s\n' ">>> New uv virtual environment created. Activate with:"
+	@printf '%s\n' ">>> Windows: .\.venv\Scripts\activate"
+	@printf '%s\n' ">>> Unix/macOS: source ./.venv/bin/activate"
 	uv sync
 
 
@@ -47,6 +49,14 @@ check-model:
 		exit 1; \
 	fi
 
+
+## Validar existencia do dataset de treino local
+.PHONY: check-data
+check-data:
+	@if [ ! -f $(DATA_FILE) ]; then \
+		echo "$(DATA_FILE) ausente. Verifique se o dataset oficial esta versionado em data/raw/."; \
+		exit 1; \
+	fi
 
 ## Compilar a imagem Docker usando o modelo treinado localmente
 .PHONY: docker-build
@@ -117,6 +127,7 @@ serve:
 		exit 2; \
 	fi
 	@if [ ! -f models/mlp.joblib ]; then \
+		$(MAKE) check-data || exit $$?; \
 		$(PYTHON_INTERPRETER) src/train_mlp.py; \
 	fi
 	@if [ "$(WITH_UI)" = "true" ]; then \
@@ -130,13 +141,13 @@ serve:
 
 ## Gerar o modelo MLP rodando o treinamento completo
 .PHONY: train
-train:
+train: check-data
 	$(PYTHON_INTERPRETER) src/train_mlp.py
 
 ## Validar a API (verificar imports e estrutura)
 .PHONY: api-validate
 api-validate:
-	$(PYTHON_INTERPRETER) validate_api.py
+	$(PYTHON_INTERPRETER) scripts/validate_api.py
 
 
 ## Apagar arquivos Python compilados
@@ -170,4 +181,4 @@ endef
 export PRINT_HELP_PYSCRIPT
 
 help:
-	@$(PYTHON_INTERPRETER) -c "${PRINT_HELP_PYSCRIPT}" < $(MAKEFILE_LIST)
+	@$(HELP_PYTHON) -c "${PRINT_HELP_PYSCRIPT}" < $(MAKEFILE_LIST)

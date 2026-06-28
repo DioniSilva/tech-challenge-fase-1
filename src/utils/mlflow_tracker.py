@@ -60,6 +60,7 @@ class MLFlowTracker:
         mlflow.sklearn.log_model(
             sk_model=model,
             artifact_path="model",
+            serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
         )
 
         #
@@ -68,4 +69,5 @@ class MLFlowTracker:
         mlflow.sklearn.log_model(
             sk_model=pipeline,
             artifact_path="pipeline",
+            serialization_format=mlflow.sklearn.SERIALIZATION_FORMAT_CLOUDPICKLE,
         )

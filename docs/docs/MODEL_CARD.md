@@ -162,7 +162,7 @@ y_prob = model.predict_proba(X_novo)[:, 1]
 | 1.0.1 | Maio de 2026 | Release inicial com técnica de regressão logística (baseline) |
 | 1.0.2 | Maio de 2026 | Nova release com técnica de árvore de decisão |
 | 1.0.3 | Junho de 2026 | Nova release com técnica de random forest |
-| 1.0.4 | Junho de 2026 | Nova release com técnica de gredient boosting |
+| 1.0.4 | Junho de 2026 | Nova release com técnica de gradient boosting |
 | 1.0.5 | Junho de 2026 | Release final com técnica de rede neural |
 
 ---
