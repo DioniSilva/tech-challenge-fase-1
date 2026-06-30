@@ -27,3 +27,5 @@ nav:
       - Primeiros passos: getting-started.md
       - Comandos: comandos.md
       - MLflow: mlflow.md
+  - Entrega:
+      - Roteiro do vídeo STAR: roteiro-video-star.md
