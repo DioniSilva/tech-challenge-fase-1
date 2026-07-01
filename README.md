@@ -41,7 +41,7 @@ Este projeto resolve um problema de classificação binária: identificar client
 
 ## Links da entrega
 
-- [Vídeo de apresentação](https://youtu.be/SZ2oaqu27ql)
+- [Vídeo de apresentação](https://youtu.be/SZ2oaqu27qI?si=BVy0UwchjEoij8Bh)
 - [Documentação publicada](https://dionisilva.github.io/tech-challenge-fase-1)
 - [Swagger da API](http://100.26.100.251:8000/docs)
 
