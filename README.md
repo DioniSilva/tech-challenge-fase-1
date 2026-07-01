@@ -12,6 +12,7 @@ Pipeline de Machine Learning para prever churn de clientes Telco usando PyTorch,
 ## Sumário
 
 - [Visão geral](#visão-geral)
+- [Links da entrega](#links-da-entrega)
 - [Arquitetura](#arquitetura)
 - [Resultados do modelo](#resultados-do-modelo)
 - [Como executar](#como-executar)
@@ -37,6 +38,12 @@ Este projeto resolve um problema de classificação binária: identificar client
 
 > [!IMPORTANT]
 > O modelo final usado pela API é gerado localmente por `make train`. O arquivo `models/mlp.joblib` não deve ser versionado.
+
+## Links da entrega
+
+- [Vídeo de apresentação](https://youtu.be/SZ2oaqu27ql)
+- [Documentação publicada](https://dionisilva.github.io/tech-challenge-fase-1)
+- [Swagger da API](http://100.26.100.251:8000/docs)
 
 ## Arquitetura
 
@@ -217,7 +224,7 @@ curl -X POST http://localhost:8000/api/v1/predict \
   }'
 ```
 
-A documentação interativa da API fica em `http://localhost:8000/docs`.
+A documentação interativa da API fica disponível localmente em `http://localhost:8000/docs` e no Swagger público em [http://100.26.100.251:8000/docs](http://100.26.100.251:8000/docs).
 
 ## Docker
 
